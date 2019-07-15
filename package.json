@@ -1,0 +1,22 @@
+{
+  "name": "wayfarer",
+  "version": "1.0.0",
+  "description": "Way farer is a web app bus booking platform.",
+  "main": "app.js",
+  "scripts": {
+    "start": "nodemon server.js --exec babel-node --"
+  },
+  "keywords": [
+    "node",
+    "js"
+  ],
+  "author": "Joseph Njuguna",
+  "license": "ISC",
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-preset-es2015": "^6.24.1",
+    "eslint": "^5.16.0",
+    "eslint-config-airbnb-base": "^13.2.0",
+    "eslint-plugin-import": "^2.18.0"
+  }
+}
