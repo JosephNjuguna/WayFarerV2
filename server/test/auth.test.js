@@ -134,6 +134,19 @@ describe('/AUTHENTICATION', () => {
 				});
 		});
 
+		it('should not log in non-existing email', (done) => {
+			chai.request(app)
+				.post('/api/v1/login')
+				.send({
+					email: 'test1121333@mail.com',
+					password: 'qwerQ@qwerre123',
+				}).end((err, res) => {
+					res.should.have.status(404);
+					if (err) return done();
+					done();
+				});
+		});
+
 		it('should successfully log in user', (done) => {
 			chai.request(app)
 				.post('/api/v1/login')
