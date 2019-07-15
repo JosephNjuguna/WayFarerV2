@@ -53,6 +53,40 @@ class Validations {
 			return reqResponses.handleError(500, error.toString(), res);
 		}
 	}
+
+	static validatelogin(req, res, next) {
+		try {
+			const {
+				email,
+				password,
+			} = req.body;
+
+			if (email === '') {
+				return reqResponses.handleError(400, 'Please enter email address', res);
+			}
+			if (password === '') {
+				return reqResponses.handleError(400, 'Please enter a password', res);
+			}
+			next();
+		} catch (error) {
+			reqResponses.handleError(error.toString(), 500, res);
+		}
+	}
+
+	static async validateexistingEmail(req, res, next) {
+		try {
+			const {
+				email,
+			} = req.body;
+			const checkEmail = await Usermodel.login(email);
+			if (!checkEmail) {
+				return reqResponses.handleError(404, 'No email found', res);
+			}
+			next();
+		} catch (error) {
+			return reqResponses.handleError(500, error.toString(), res);
+		}
+	}
 }
 
 export default Validations;
