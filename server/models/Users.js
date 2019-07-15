@@ -32,6 +32,15 @@ class UsersModel {
 			return true;
 		}
 	}
+
+	static async login(email) {
+		const obj = db.find(o => o.email === email);
+		if (!obj) {
+			return false;
+		}
+		this.result = obj;
+		return this.result;
+	}
 }
 
 export default UsersModel;
