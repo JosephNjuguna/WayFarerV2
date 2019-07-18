@@ -40,6 +40,18 @@ class Trip {
 			return reqResponses.internalError(res);
 		}
 	}
+
+	static async viewAlltrips(req, res) {
+		try {
+			const viewTrips = await TripModel.viewAlltrips();
+			if (!viewTrips) {
+				return reqResponses.handleError(404, 'No Trips record found', res);
+			}
+			return reqResponses.handleSuccess(200, 'success', viewTrips, res);
+		} catch (error) {
+			return reqResponses.internalError(res);
+		}
+	}
 }
 
 export default Trip;
