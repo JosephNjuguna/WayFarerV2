@@ -37,6 +37,32 @@ class Trips {
 			}
 		}
 	}
+
+	async cancelTrip() {
+		const id = parseInt(this.payload.tripId);
+		const obj = db.find(o => o.id === id);
+		if (!obj) {
+			this.result = { status: 404, message: `Trip id record '${id}' not found` };
+			return false;
+		}
+		if (obj.status === 'canceled') {
+			this.result = { status: 400, message: 'This trip is already cancelled' };
+			return false;
+		}
+		const tripCancel = {
+			id: obj.id,
+			seatingCapacity: obj.seatingCapacity,
+			busLicensenumber: obj.busLicensenumber,
+			origin: obj.origin,
+			destination: obj.destination,
+			tripDate: obj.tripDate,
+			fare: obj.fare,
+			status: this.payload.tripStatus || obj.status,
+		};
+		db.splice(obj.id - 1, 1, tripCancel);
+		this.result = tripCancel;
+		return true;
+	}
 }
 
 export default Trips;
