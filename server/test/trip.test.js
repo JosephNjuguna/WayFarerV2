@@ -192,4 +192,26 @@ describe('/TRIPS', () => {
 				done();
 			});
 	});
+
+	it('should check single trip', (done) => {
+		chai.request(app)
+			.get('/api/v1/trips/1')
+			.set('authorization', `Bearer ${userToken}`)
+			.end((err, res) => {
+				res.should.have.status(200);
+				if (err) return done();
+				done();
+			});
+	});
+
+	it('should check trip not found', (done) => {
+		chai.request(app)
+			.get('/api/v1/trips/10000')
+			.set('authorization', `Bearer ${userToken}`)
+			.end((err, res) => {
+				res.should.have.status(404);
+				if (err) return done();
+				done();
+			});
+	});
 });
