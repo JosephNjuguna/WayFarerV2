@@ -48,6 +48,15 @@ class Trip {
 		}
 		return reqResponses.handleSuccess(200, 'success', viewTrips, res);
 	}
+
+	static async viewSingletrip(req, res) {
+		const tripId = req.params.id;
+		const singleTrip = await TripModel.viewSingletrip(tripId);
+		if (!singleTrip) {
+			return reqResponses.handleError(404, 'Trip Id not found', res);
+		}
+		return reqResponses.handleSuccess(200, 'success', singleTrip, res);
+	}
 }
 
 export default Trip;
