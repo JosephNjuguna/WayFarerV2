@@ -1,7 +1,7 @@
 /* eslint-disable max-len */
 /* eslint-disable no-else-return */
 /* eslint-disable radix */
-import db from '../MockData/trips';
+import db from '../Db/trips';
 import date from '../helpers/Date';
 
 class Trips {
@@ -62,6 +62,14 @@ class Trips {
 		db.splice(obj.id - 1, 1, tripCancel);
 		this.result = tripCancel;
 		return true;
+	}
+
+	static async viewAlltrips() {
+		if (db.length === 0) {
+			return false;
+		}
+		this.result = db;
+		return this.result;
 	}
 }
 

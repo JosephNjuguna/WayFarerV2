@@ -6,5 +6,6 @@ const router = express.Router();
 
 router.post('/trips', Auth.checkAdmin, controllers.createTrip);
 router.patch('/trips/:id/cancel', Auth.checkAdmin, controllers.cancelTrip);
+router.get('/trips', Auth.checkUser, controllers.viewAlltrips);
 
 export default router;

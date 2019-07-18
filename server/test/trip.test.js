@@ -23,6 +23,17 @@ describe('/TRIPS', () => {
 		done();
 	});
 
+	it('should check no trips record', (done) => {
+		chai.request(app)
+			.get('/api/v1/trips')
+			.set('authorization', `Bearer ${userToken}`)
+			.end((err, res) => {
+				res.should.have.status(404);
+				if (err) return done();
+				done();
+			});
+	});
+
 	it('should show that token is required', (done) => {
 		chai.request(app)
 			.post('/api/v1/trips')
@@ -155,6 +166,28 @@ describe('/TRIPS', () => {
 			})
 			.end((err, res) => {
 				res.should.have.status(400);
+				if (err) return done();
+				done();
+			});
+	});
+
+	it('should show that token is required', (done) => {
+		chai.request(app)
+			.get('/api/v1/trips')
+			.set('authorization', ``)
+			.end((err, res) => {
+				res.should.have.status(400);
+				if (err) return done();
+				done();
+			});
+	});
+
+	it('should check all trips', (done) => {
+		chai.request(app)
+			.get('/api/v1/trips')
+			.set('authorization', `Bearer ${userToken}`)
+			.end((err, res) => {
+				res.should.have.status(200);
 				if (err) return done();
 				done();
 			});
