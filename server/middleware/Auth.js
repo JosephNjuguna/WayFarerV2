@@ -10,7 +10,7 @@ class AuthValidator {
 		const tokenData = req.headers.authorization;
 		if (!tokenData || tokenData === null || tokenData === '') {
 			return reqResponses.handleError(400, 'Token required', res);
-		// eslint-disable-next-line no-else-return
+			// eslint-disable-next-line no-else-return
 		} else {
 			const token = req.headers.authorization.split(' ')[1];
 			const decoded = jwt.verify(token, process.env.JWT_KEY);
@@ -22,6 +22,19 @@ class AuthValidator {
 					message: 'Access Denied!',
 				});
 			}
+		}
+	}
+
+	static async checkUser(req, res, next) {
+		const tokenData = req.headers.authorization;
+		if (!tokenData || tokenData === null || tokenData === '') {
+			return reqResponses.handleError(400, 'Token required', res);
+			// eslint-disable-next-line no-else-return
+		} else {
+			const token = req.headers.authorization.split(' ')[1];
+			const decoded = jwt.verify(token, process.env.JWT_KEY);
+			req.userData = decoded;
+			next();
 		}
 	}
 }
