@@ -26,6 +26,20 @@ class Trip {
 			return reqResponses.internalError(res);
 		}
 	}
+
+	static async cancelTrip(req, res) {
+		try {
+			const tripStatus = req.body.status;
+			const tripId = req.params.id;
+			const cancelTrip = new TripModel({ tripStatus, tripId });
+			if (!await cancelTrip.cancelTrip()) {
+				return reqResponses.handleError(cancelTrip.result.status, cancelTrip.message, res);
+			}
+			return reqResponses.handleSuccess(200, 'Trip cancelled successfully', cancelTrip.result, res);
+		} catch (error) {
+			return reqResponses.internalError(res);
+		}
+	}
 }
 
 export default Trip;
