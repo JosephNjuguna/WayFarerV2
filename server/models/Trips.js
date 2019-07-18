@@ -71,6 +71,17 @@ class Trips {
 		this.result = db;
 		return this.result;
 	}
+
+	static async viewSingletrip(tripId) {
+		// eslint-disable-next-line radix
+		const id = parseInt(tripId);
+		const obj = db.find(o => o.id === id);
+		if (!obj) {
+			return false;
+		}
+		this.result = obj;
+		return this.result;
+	}
 }
 
 export default Trips;
