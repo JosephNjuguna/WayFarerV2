@@ -100,7 +100,7 @@ describe('/TRIPS', () => {
 				busLicensenumber: 'RAD 129',
 				origin: 'KIGALI',
 				destination: 'NAIROBI',
-				tripDate: '19/7/2019',
+				tripDate: '24/7/2019',
 				fare: 3500,
 			})
 			.end((err, res) => {
@@ -208,6 +208,81 @@ describe('/TRIPS', () => {
 		chai.request(app)
 			.get('/api/v1/trips/10000')
 			.set('authorization', `Bearer ${userToken}`)
+			.end((err, res) => {
+				res.should.have.status(404);
+				if (err) return done();
+				done();
+			});
+	});
+
+	it('should successfully show a trip is not found', (done) => {
+		chai.request(app)
+			.post('/api/v1/bookings')
+			.set('authorization', `Bearer ${userToken}`)
+			.send({
+				tripId: 100,
+				seatNumber: 1,
+			})
+			.end((err, res) => {
+				res.should.have.status(404);
+				if (err) return done();
+				done();
+			});
+	});
+
+	it('should successfully show user that a seat is not available', (done) => {
+		chai.request(app)
+			.post('/api/v1/bookings')
+			.set('authorization', `Bearer ${userToken}`)
+			.send({
+				tripId: 1,
+				seatNumber: 20,
+			})
+			.end((err, res) => {
+				res.should.have.status(404);
+				if (err) return done();
+				done();
+			});
+	});
+
+	it('should successfully show a trip is not found available due to date', (done) => {
+		chai.request(app)
+			.post('/api/v1/bookings')
+			.set('authorization', `Bearer ${userToken}`)
+			.send({
+				tripId: 3,
+				seatNumber: 1,
+			})
+			.end((err, res) => {
+				res.should.have.status(404);
+				if (err) return done();
+				done();
+			});
+	});
+
+	it('should successfully book a trip', (done) => {
+		chai.request(app)
+			.post('/api/v1/bookings')
+			.set('authorization', `Bearer ${userToken}`)
+			.send({
+				tripId: 1,
+				seatNumber: 1,
+			})
+			.end((err, res) => {
+				res.should.have.status(201);
+				if (err) return done();
+				done();
+			});
+	});
+
+	it('should successfully show user that a seat is taken', (done) => {
+		chai.request(app)
+			.post('/api/v1/bookings')
+			.set('authorization', `Bearer ${userToken}`)
+			.send({
+				tripId: 1,
+				seatNumber: 1,
+			})
 			.end((err, res) => {
 				res.should.have.status(404);
 				if (err) return done();
