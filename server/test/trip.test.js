@@ -260,6 +260,17 @@ describe('/TRIPS', () => {
 			});
 	});
 
+	it('should successfully show user his/her bookings', (done) => {
+		chai.request(app)
+			.get('/api/v1/userbookings')
+			.set('authorization', `Bearer ${userToken}`)
+			.end((err, res) => {
+				res.should.have.status(404);
+				if (err) return done();
+				done();
+			});
+	});
+
 	it('should successfully book a trip', (done) => {
 		chai.request(app)
 			.post('/api/v1/bookings')
@@ -285,6 +296,17 @@ describe('/TRIPS', () => {
 			})
 			.end((err, res) => {
 				res.should.have.status(404);
+				if (err) return done();
+				done();
+			});
+	});
+
+	it('should successfully show user his/her bookings', (done) => {
+		chai.request(app)
+			.get('/api/v1/userbookings')
+			.set('authorization', `Bearer ${userToken}`)
+			.end((err, res) => {
+				res.should.have.status(200);
 				if (err) return done();
 				done();
 			});
