@@ -27,6 +27,22 @@ class Bookings {
 			return reqResponses.internalError(res);
 		}
 	}
+
+	static async userAllBooking(req, res) {
+		try {
+			const token = req.headers.authorization.split(' ')[1];
+			const decoded = jwt.verify(token, process.env.JWT_KEY);
+			req.userData = decoded;
+			const { email } = req.userData;
+			const viewBookings = new BookingModel({ email });
+			if (!await viewBookings.userAllBooking()) {
+				return reqResponses.notFound(`${req.userData.firstname}, you dont have any Booking records`, res);
+			}
+			return reqResponses.handleSuccess(200, 'success', viewBookings.result, res);
+		} catch (error) {
+			return reqResponses.internalError(res);
+		}
+	}
 }
 
 export default Bookings;
