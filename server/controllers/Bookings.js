@@ -43,6 +43,14 @@ class Bookings {
 			return reqResponses.internalError(res);
 		}
 	}
+
+	static async viewAllBooking(req, res) {
+		const viewBookings = await BookingModel.viewAllBooking();
+		if (!viewBookings) {
+			return reqResponses.handleError(404, 'No Booking records found', res);
+		}
+		return reqResponses.handleSuccess(200, 'success', viewBookings, res);
+	}
 }
 
 export default Bookings;
