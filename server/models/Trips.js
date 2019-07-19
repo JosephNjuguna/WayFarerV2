@@ -68,6 +68,7 @@ class Trips {
 		if (db.length === 0) {
 			return false;
 		}
+		console.log(db);
 		this.result = db;
 		return this.result;
 	}

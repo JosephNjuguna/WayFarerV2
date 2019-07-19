@@ -7,6 +7,13 @@ class Responses {
 		});
 	}
 
+	static notFound(message, res) {
+		return res.status(404).json({
+			status: 404,
+			message,
+		});
+	}
+
 	static handleError(statusCode, message, res) {
 		return res.status(statusCode).json({
 			status: statusCode,
