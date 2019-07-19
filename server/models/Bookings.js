@@ -61,6 +61,14 @@ class Bookings {
 		this.result = obj;
 		return true;
 	}
+
+	static async viewAllBooking() {
+		if (db.length === 0) {
+			return false;
+		}
+		this.result = db;
+		return this.result;
+	}
 }
 
 export default Bookings;
