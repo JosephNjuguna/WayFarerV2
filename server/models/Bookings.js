@@ -51,6 +51,16 @@ class Bookings {
 			}
 		}
 	}
+
+	async userAllBooking() {
+		const obj = await db.filter(o => o.email === this.payload.email);
+		if (obj.length === 0) {
+			this.result = 'Sorry you have no booking record yet.';
+			return false;
+		}
+		this.result = obj;
+		return true;
+	}
 }
 
 export default Bookings;
