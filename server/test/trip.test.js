@@ -18,7 +18,7 @@ const user = {
 const adminToken = Token.generateToken(1, 'admin@wayfarer.com', 'admin', 'admin', true);
 const userToken = Token.generateToken(3, user.email, user.firstname, user.lastname, user.isAdmin);
 
-describe('/TRIPS', () => {
+describe('/TRIPS AND BOOKINGS', () => {
 	before('generate token', async (done) => {
 		done();
 	});
@@ -260,7 +260,18 @@ describe('/TRIPS', () => {
 			});
 	});
 
-	it('should successfully show user his/her bookings', (done) => {
+	it('should successfully show admin no bookings record found on Wayfarer', (done) => {
+		chai.request(app)
+			.get('/api/v1/bookings')
+			.set('authorization', `Bearer ${adminToken}`)
+			.end((err, res) => {
+				res.should.have.status(404);
+				if (err) return done();
+				done();
+			});
+	});
+
+	it('should successfully show user no records of his/her bookings', (done) => {
 		chai.request(app)
 			.get('/api/v1/userbookings')
 			.set('authorization', `Bearer ${userToken}`)
@@ -305,6 +316,17 @@ describe('/TRIPS', () => {
 		chai.request(app)
 			.get('/api/v1/userbookings')
 			.set('authorization', `Bearer ${userToken}`)
+			.end((err, res) => {
+				res.should.have.status(200);
+				if (err) return done();
+				done();
+			});
+	});
+
+	it('should successfully show admin all bookings on Wayfarer', (done) => {
+		chai.request(app)
+			.get('/api/v1/bookings')
+			.set('authorization', `Bearer ${adminToken}`)
 			.end((err, res) => {
 				res.should.have.status(200);
 				if (err) return done();
