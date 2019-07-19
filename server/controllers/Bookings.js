@@ -45,15 +45,11 @@ class Bookings {
 	}
 
 	static async viewAllBooking(req, res) {
-		try {
-			const viewBookings = await BookingModel.viewAllBooking();
-			if (!viewBookings) {
-				return reqResponses.handleError(404, 'No Booking records found', res);
-			}
-			return reqResponses.handleSuccess(200, 'success', viewBookings, res);
-		} catch (error) {
-			return reqResponses.internalError(res);
+		const viewBookings = await BookingModel.viewAllBooking();
+		if (!viewBookings) {
+			return reqResponses.handleError(404, 'No Booking records found', res);
 		}
+		return reqResponses.handleSuccess(200, 'success', viewBookings, res);
 	}
 }
 
