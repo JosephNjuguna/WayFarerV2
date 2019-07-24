@@ -9,5 +9,6 @@ router.patch('/trips/:id/cancel', Auth.checkAdmin, controllers.cancelTrip);
 router.get('/trips', Auth.checkUser, controllers.viewAlltrips);
 router.get('/trips/:id', Auth.checkUser, controllers.viewSingletrip);
 router.get('/origin/:route', Auth.checkUser, controllers.filterOrigin);
+router.get('/destination/:route', Auth.checkUser, controllers.filterDestination);
 
 export default router;
