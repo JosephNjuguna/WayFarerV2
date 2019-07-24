@@ -204,6 +204,28 @@ describe('/TRIPS AND BOOKINGS', () => {
 			});
 	});
 
+	it('should filter trip by origin', (done) => {
+		chai.request(app)
+			.get('/api/v1/origin/KIGALI')
+			.set('authorization', `Bearer ${userToken}`)
+			.end((err, res) => {
+				res.should.have.status(200);
+				if (err) return done();
+				done();
+			});
+	});
+
+	it('should show trip not found by origin', (done) => {
+		chai.request(app)
+			.get('/api/v1/origin/NAIROBI')
+			.set('authorization', `Bearer ${userToken}`)
+			.end((err, res) => {
+				res.should.have.status(404);
+				if (err) return done();
+				done();
+			});
+	});
+
 	it('should check trip not found', (done) => {
 		chai.request(app)
 			.get('/api/v1/trips/10000')

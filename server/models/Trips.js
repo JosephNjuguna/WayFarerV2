@@ -82,6 +82,16 @@ class Trips {
 		this.result = obj;
 		return this.result;
 	}
+
+	async filterOrigin() {
+		const obj = db.filter(o => o.origin === this.payload.trip);
+		if (obj.length === 0) {
+			this.result = 'No Origin found.';
+			return false;
+		}
+		this.result = obj;
+		return true;
+	}
 }
 
 export default Trips;
