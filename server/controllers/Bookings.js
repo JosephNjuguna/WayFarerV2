@@ -51,6 +51,24 @@ class Bookings {
 		}
 		return reqResponses.handleSuccess(200, 'success', viewBookings, res);
 	}
+
+	static async deleteBooking(req, res) {
+		try {
+			const bookId = req.params.id;
+			const token = req.headers.authorization.split(' ')[1];
+			const decoded = jwt.verify(token, process.env.JWT_KEY);
+			req.userData = decoded;
+			const { email } = req.userData;
+			const cancelBooking = new BookingModel({ email, bookId });
+			if (!await cancelBooking.deleteBooking()) {
+				// eslint-disable-next-line max-len
+				return reqResponses.handleError(cancelBooking.result.status, cancelBooking.result.message, res);
+			}
+			return reqResponses.handleSuccess(200, 'success', `${req.userData.firstname}, you have successfully canceled your booking.`, res);
+		} catch (error) {
+			return reqResponses.internalError(res);
+		}
+	}
 }
 
 export default Bookings;

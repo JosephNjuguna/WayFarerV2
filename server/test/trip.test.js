@@ -119,7 +119,7 @@ describe('/TRIPS AND BOOKINGS', () => {
 				busLicensenumber: 'RAD 129',
 				origin: 'KIGALI',
 				destination: 'NAIROBI',
-				tripDate: '19/7/2019',
+				tripDate: '24/7/2019',
 				fare: 3500,
 			})
 			.end((err, res) => {
@@ -327,6 +327,28 @@ describe('/TRIPS AND BOOKINGS', () => {
 		chai.request(app)
 			.get('/api/v1/bookings')
 			.set('authorization', `Bearer ${adminToken}`)
+			.end((err, res) => {
+				res.should.have.status(200);
+				if (err) return done();
+				done();
+			});
+	});
+
+	it('should successfully show user no trip id record found for his/her booking', (done) => {
+		chai.request(app)
+			.delete('/api/v1/bookings/1000000')
+			.set('authorization', `Bearer ${userToken}`)
+			.end((err, res) => {
+				res.should.have.status(404);
+				if (err) return done();
+				done();
+			});
+	});
+
+	it('should successfully show user that trip booking is deleted', (done) => {
+		chai.request(app)
+			.delete('/api/v1/bookings/1')
+			.set('authorization', `Bearer ${userToken}`)
 			.end((err, res) => {
 				res.should.have.status(200);
 				if (err) return done();
