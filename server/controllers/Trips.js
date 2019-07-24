@@ -66,6 +66,15 @@ class Trip {
 		}
 		return reqResponses.handleSuccess(200, 'success', filteredTrip.result, res);
 	}
+
+	static async filterDestination(req, res) {
+		const trip = req.params.route;
+		const filteredTrip = new TripModel({ trip });
+		if (!await filteredTrip.filterDestination()) {
+			return reqResponses.notFound(`Trip destination: '${trip} not found.`, res);
+		}
+		return reqResponses.handleSuccess(200, 'success', filteredTrip.result, res);
+	}
 }
 
 export default Trip;

@@ -92,6 +92,16 @@ class Trips {
 		this.result = obj;
 		return true;
 	}
+
+	async filterDestination() {
+		const obj = db.filter(o => o.destination === this.payload.trip);
+		if (obj.length === 0) {
+			this.result = 'No Destination found.';
+			return false;
+		}
+		this.result = obj;
+		return true;
+	}
 }
 
 export default Trips;
