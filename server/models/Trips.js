@@ -46,7 +46,7 @@ class Trips {
 			return false;
 		}
 		if (obj.status === 'canceled') {
-			this.result = { status: 400, message: 'This trip is already cancelled' };
+			this.result = { status: 400, message: 'This trip is already canceled' };
 			return false;
 		}
 		const tripCancel = {

@@ -143,34 +143,6 @@ describe('/TRIPS AND BOOKINGS', () => {
 			});
 	});
 
-	it('should successfully cancel a trip', (done) => {
-		chai.request(app)
-			.patch(`/api/v1/trips/${1}/cancel`)
-			.set('authorization', `Bearer ${adminToken}`)
-			.send({
-				status: 'canceled',
-			})
-			.end((err, res) => {
-				res.should.have.status(200);
-				if (err) return done();
-				done();
-			});
-	});
-
-	it('should check if trip is successfully canceled', (done) => {
-		chai.request(app)
-			.patch(`/api/v1/trips/${1}/cancel`)
-			.set('authorization', `Bearer ${adminToken}`)
-			.send({
-				status: 'cancel',
-			})
-			.end((err, res) => {
-				res.should.have.status(400);
-				if (err) return done();
-				done();
-			});
-	});
-
 	it('should show that token is required', (done) => {
 		chai.request(app)
 			.get('/api/v1/trips')
@@ -395,6 +367,49 @@ describe('/TRIPS AND BOOKINGS', () => {
 			.set('authorization', `Bearer ${userToken}`)
 			.end((err, res) => {
 				res.should.have.status(200);
+				if (err) return done();
+				done();
+			});
+	});
+
+	it('should successfully cancel a trip', (done) => {
+		chai.request(app)
+			.patch(`/api/v1/trips/${1}/cancel`)
+			.set('authorization', `Bearer ${adminToken}`)
+			.send({
+				status: 'canceled',
+			})
+			.end((err, res) => {
+				res.should.have.status(200);
+				if (err) return done();
+				done();
+			});
+	});
+
+	it('should check if trip is successfully canceled', (done) => {
+		chai.request(app)
+			.patch(`/api/v1/trips/${1}/cancel`)
+			.set('authorization', `Bearer ${adminToken}`)
+			.send({
+				status: 'canceled',
+			})
+			.end((err, res) => {
+				res.should.have.status(400);
+				if (err) return done();
+				done();
+			});
+	});
+
+	it('should not book a canceled trip', (done) => {
+		chai.request(app)
+			.post('/api/v1/bookings')
+			.set('authorization', `Bearer ${userToken}`)
+			.send({
+				tripId: 1,
+				seatNumber: 1,
+			})
+			.end((err, res) => {
+				res.should.have.status(404);
 				if (err) return done();
 				done();
 			});
