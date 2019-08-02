@@ -48,7 +48,7 @@ const bookings = [
 		tripId: 2,
 		userId: 1,
 		busLicensenumber: 'RAD 123',
-		tripdate: '14/1/2019',
+		tripdate: '31/1/2019',
 		firstname: 'main',
 		lastname: 'admin',
 		email: 'admin123@gmail.com',
