@@ -33,7 +33,7 @@ class Trip {
 			const tripId = req.params.id;
 			const cancelTrip = new TripModel({ tripStatus, tripId });
 			if (!await cancelTrip.cancelTrip()) {
-				return reqResponses.handleError(cancelTrip.result.status, cancelTrip.message, res);
+				return reqResponses.handleError(cancelTrip.result.status, cancelTrip.result.message, res);
 			}
 			return reqResponses.handleSuccess(200, 'Trip cancelled successfully', cancelTrip.result, res);
 		} catch (error) {
