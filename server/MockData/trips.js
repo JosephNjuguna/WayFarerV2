@@ -25,7 +25,7 @@ const trips = [
 		busLicensenumber: 'RAD 789',
 		origin: 'NAIROBI',
 		destination: 'KIGALI',
-		tripdate: '14/7/2019',
+		tripdate: '14/8/2019',
 		fare: 3000,
 		status: 'canceled',
 	},

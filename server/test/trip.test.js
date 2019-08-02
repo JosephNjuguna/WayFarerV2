@@ -100,7 +100,7 @@ describe('/TRIPS AND BOOKINGS', () => {
 				busLicensenumber: 'RAD 129',
 				origin: 'KIGALI',
 				destination: 'NAIROBI',
-				tripDate: '24/7/2019',
+				tripDate: '31/8/2019',
 				fare: 3500,
 			})
 			.end((err, res) => {
@@ -119,7 +119,7 @@ describe('/TRIPS AND BOOKINGS', () => {
 				busLicensenumber: 'RAD 129',
 				origin: 'KIGALI',
 				destination: 'NAIROBI',
-				tripDate: '24/7/2019',
+				tripDate: '31/8/2019',
 				fare: 3500,
 			})
 			.end((err, res) => {
