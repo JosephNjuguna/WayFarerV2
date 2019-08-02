@@ -23,6 +23,10 @@ class Bookings {
 				this.result = `Please select seat number less than ${obj.seatingCapacity} and not 0`;
 				return false;
 			}
+			if (obj.status === 'canceled') {
+				this.result = `This trip id: ${tripInfo} is canceled and not available.`;
+				return false;
+			}
 			if (obj.tripdate < date.modernDate()) {
 				this.result = `Please select a current trip. this trip already happened on date ${obj.tripdate}.`;
 				return false;
