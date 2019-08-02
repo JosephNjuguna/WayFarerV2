@@ -40,11 +40,11 @@ Wayfarer is an online bus booking platform.
 
 ### Github Pages link
 
-[WayFarer UI](https://josephnjuguna.github.io/WayFarer/UI/index.html)
+[WayFarer UI](https://josephnjuguna.github.io/Wayfarer/UI/index.html)
 
 ### Heroku link Example
 
-[WayFarer API Endpoints](https://v1wayfarer.herokuapp.com/api-docs/)
+[WayFarer API Endpoints](https://v1wayfarer.herokuapp.com)
 
 ## Getting Started
 
@@ -68,8 +68,10 @@ It will install the node_modules which will help you run the project on your loc
 Before running the server ensure that you create a  **.env** file.
 Inside the **.env** file  add the following:
 ```
+EMAIL = admin@wayfarer.com
+PASSWORD = @12Admin
 PORT = 3000
-JWT_KEY = **your secret key** random values and digits.
+JWT_KEY= 'wayfarer@12'
 ```
 
 ## Run the server
