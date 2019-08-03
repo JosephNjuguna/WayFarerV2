@@ -31,7 +31,7 @@ class Bookings {
 				this.result = `Please select a current trip. this trip already happened on date ${obj.tripdate}.`;
 				return false;
 			} else {
-				const findSeat = db.find(o => o.seatNumber === seatNo);
+				const findSeat = db.find(o => o.seatNumber === seatNo && o.tripId === tripInfo);
 				if (findSeat) {
 					this.result = `Seat number : ${findSeat.seatNumber} already taken. choose another seat`;
 					return false;
