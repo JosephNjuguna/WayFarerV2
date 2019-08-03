@@ -1,0 +1,571 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "version": "1.0",
+    "title": "WayFarer V1",
+    "description": "Wayfarer is an online bus booking platform.",
+    "contact": {
+      "email" : "josephnjuguna482@gmail.com"
+    }
+  },
+  "host": "v1wayfarer.herokuapp.com",
+  "basePath": "/api/v1",
+  "securityDefinitions": {},
+  "schemes": [
+    "https"
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/signup": {
+      "post": {
+        "description": "",
+        "summary": "signup",
+        "tags": [
+          "Way Farer VI"
+        ],
+        "operationId": "SignupPost",
+        "deprecated": false,
+        "produces": [
+          "application/json"
+        ],
+        "consumes": [
+          "application/x-www-form-urlencoded"
+        ],
+        "parameters": [
+          {
+            "name": "firstname",
+            "in": "formData",
+            "type": "string",
+            "description": ""
+          },
+          {
+            "name": "lastname",
+            "in": "formData",
+            "type": "string",
+            "description": ""
+          },
+          {
+            "name": "email",
+            "in": "formData",
+            "type": "string",
+            "description": ""
+          },
+          {
+            "name": "password",
+            "in": "formData",
+            "type": "string",
+            "description": ""
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+          "400":{
+            "description" : "Valid Token required since  API endpoint secured"
+          },
+          "404": {
+            "description": "User Record Not found"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/login": {
+      "post": {
+        "description": "",
+        "summary": "login",
+        "tags": [
+          "Way Farer VI"
+        ],
+        "operationId": "LoginPost",
+        "deprecated": false,
+        "produces": [
+          "application/json"
+        ],
+        "consumes": [
+          "application/x-www-form-urlencoded"
+        ],
+        "parameters": [
+          {
+            "name": "email",
+            "in": "formData",
+            "type": "string",
+            "description": ""
+          },
+          {
+            "name": "password",
+            "in": "formData",
+            "type": "string",
+            "description": ""
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+          "400":{
+            "description" : "Valid Token required since  API endpoint secured"
+          },
+          "404": {
+            "description": "User Record Not found"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/trips": {
+      "post": {
+        "description": "",
+        "summary": "create trip",
+        "tags": [
+          "Way Farer VI"
+        ],
+        "operationId": "TripsPost",
+        "deprecated": false,
+        "produces": [
+          "application/json"
+        ],
+        "consumes": [
+          "application/x-www-form-urlencoded"
+        ],
+        "parameters": [{
+            "name": "Authorization",
+            "in": "header",
+            "default": "Bearer {}",
+            "type": "string"
+          },
+          {
+            "name": "seatingCapacity",
+            "in": "formData",
+            "type": "string",
+            "description": ""
+          },
+          {
+            "name": "busLicensenumber",
+            "in": "formData",
+            "type": "string",
+            "description": ""
+          },
+          {
+            "name": "origin",
+            "in": "formData",
+            "type": "string",
+            "description": ""
+          },
+          {
+            "name": "destination",
+            "in": "formData",
+            "type": "string",
+            "description": ""
+          },
+          {
+            "name": "tripDate",
+            "in": "formData",
+            "type": "string",
+            "description": ""
+          },
+          {
+            "name": "fare",
+            "in": "formData",
+            "type": "string",
+            "description": ""
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+          "400":{
+            "description" : "Valid Token required since  API endpoint secured"
+          },
+          "404": {
+            "description": "User Record Not found"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      },
+      "get": {
+        "description": "",
+        "summary": "view trips",
+        "tags": [
+          "Way Farer VI"
+        ],
+        "operationId": "TripsGet",
+        "deprecated": false,
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [{
+          "name": "Authorization",
+          "in": "header",
+          "required": false,
+          "default": "Bearer {token}",
+          "type": "string"
+        }],
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+          "400":{
+            "description" : "Valid Token required since  API endpoint secured"
+          },
+          "404": {
+            "description": "User Record Not found"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/trips/{id}/cancel": {
+      "patch": {
+        "description": "",
+        "summary": "cancel trip",
+        "tags": [
+          "Way Farer VI"
+        ],
+        "operationId": "Trips1CancelPatch",
+        "deprecated": false,
+        "produces": [
+          "application/json"
+        ],
+        "consumes": [
+          "application/x-www-form-urlencoded"
+        ],
+        "parameters": [{
+            "name": "Authorization",
+            "in": "header",
+            "default": "Bearer {}",
+            "type": "string"
+          },
+          {
+            "name": "id",
+            "in": "path",
+            "type": "int",
+            "description": ""
+          },
+          {
+            "name": "status",
+            "in": "formData",
+            "type": "string",
+            "description": ""
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+          "400":{
+            "description" : "Valid Token required since  API endpoint secured"
+          },
+          "404": {
+            "description": "User Record Not found"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/trips/{id}": {
+      "get": {
+        "description": "",
+        "summary": "view one trip",
+        "tags": [
+          "Way Farer VI"
+        ],
+        "operationId": "Trips1Get",
+        "deprecated": false,
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+        {
+          "name": "Authorization",
+          "in": "header",
+          "required": false,
+          "default": "Bearer {}",
+          "type": "string"
+        },
+        {
+          "name": "id",
+          "in": "path",
+          "type": "string",
+          "description": ""
+        }],
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+          "400":{
+            "description" : "Valid Token required since  API endpoint secured"
+          },
+          "404": {
+            "description": "User Record Not found"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/origin/{route}": {
+      "get": {
+        "description": "",
+        "summary": "filter trip by origin",
+        "tags": [
+          "Way Farer VI"
+        ],
+        "operationId": "OriginKampalaGet",
+        "deprecated": false,
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [{
+          "name": "Authorization",
+          "in": "header",
+          "default": "Bearer {}",
+          "type": "string"
+        },
+        {
+          "name": "route",
+          "in": "path",
+          "type": "string",
+          "description": ""
+        }],
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+          "400":{
+            "description" : "Valid Token required since  API endpoint secured"
+          },
+          "404": {
+            "description": "User Record Not found"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/destination/{route}": {
+      "get": {
+        "description": "",
+        "summary": "filter trip destination",
+        "tags": [
+          "Way Farer VI"
+        ],
+        "operationId": "DestinationArushaGet",
+        "deprecated": false,
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [{
+          "name": "Authorization",
+          "in": "header",
+          "required": false,
+          "default": "Bearer {}",
+          "type": "string"
+        },
+        {
+          "name": "route",
+          "in": "path",
+          "type": "string",
+          "description": ""
+        }],
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+          "400":{
+            "description" : "Valid Token required since  API endpoint secured"
+          },
+          "404": {
+            "description": "User Record Not found"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/bookings": {
+      "post": {
+        "description": "",
+        "summary": "book trip",
+        "tags": [
+          "Way Farer VI"
+        ],
+        "operationId": "BookingsPost",
+        "deprecated": false,
+        "produces": [
+          "application/json"
+        ],
+        "consumes": [
+          "application/x-www-form-urlencoded"
+        ],
+        "parameters": [{
+            "name": "Authorization",
+            "in": "header",
+            "default": "Bearer {}",
+            "type": "string"
+          },
+          {
+            "name": "tripId",
+            "in": "formData",
+            "type": "string",
+            "description": ""
+          },
+          {
+            "name": "seatNumber",
+            "in": "formData",
+            "type": "string",
+            "description": ""
+          },
+          {
+            "name": "Content-Type",
+            "in": "header",
+            "type": "string",
+            "description": ""
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+          "400":{
+            "description" : "Valid Token required since  API endpoint secured"
+          },
+          "404": {
+            "description": "User Record Not found"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      },
+      "get": {
+        "description": "",
+        "summary": "view all bookings(Admin)",
+        "tags": [
+          "Way Farer VI"
+        ],
+        "operationId": "BookingsGet",
+        "deprecated": false,
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [{
+          "name": "Authorization",
+          "in": "header",
+          "required": false,
+          "default": "Bearer {}",
+          "type": "string"
+        }],
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+          "400":{
+            "description" : "Valid Token required since  API endpoint secured"
+          },
+          "404": {
+            "description": "User Record Not found"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/userbookings": {
+      "get": {
+        "description": "",
+        "summary": "view all bookings (User)",
+        "tags": [
+          "Way Farer VI"
+        ],
+        "operationId": "UserbookingsGet",
+        "deprecated": false,
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [{
+          "name": "Authorization",
+          "in": "header",
+          "default": "Bearer {}",
+          "type": "string"
+        }],
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+          "400":{
+            "description" : "Valid Token required since  API endpoint secured"
+          },
+          "404": {
+            "description": "User Record Not found"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/bookings/{id}": {
+      "delete": {
+        "description": "",
+        "summary": "delete booking",
+        "tags": [
+          "Way Farer VI"
+        ],
+        "operationId": "Bookings3Delete",
+        "deprecated": false,
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [{
+          "name": "Authorization",
+          "in": "header",
+          "required": false,
+          "default": "Bearer {}",
+          "type": "string"
+        },
+        {
+          "name": "id",
+          "in": "path",
+          "type": "string",
+          "description": ""
+        }],
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+          "400":{
+            "description" : "Valid Token required since  API endpoint secured"
+          },
+          "404": {
+            "description": "User Record Not found"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    }
+  }
+}
