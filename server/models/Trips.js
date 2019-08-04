@@ -22,7 +22,7 @@ class Trips {
 			fare: parseInt(this.payload.fare),
 			status: 'active',
 		};
-		if (this.payload.tripDate < date.modernDate()) {
+		if (new Date(this.payload.tripDate) < new Date(date.modernDate())) {
 			this.result = { status: 400, message: `Please enter a valid date. You have entered a past date.` };
 			return false;
 		} else {
