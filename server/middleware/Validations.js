@@ -1,7 +1,10 @@
 /* eslint-disable consistent-return */
+import BaseJoi from '@hapi/joi';
+import Extension from '@hapi/joi-date';
 import reqResponses from '../helpers/Responses';
 import Usermodel from '../models/Users';
 
+const Joi = BaseJoi.extend(Extension);
 class Validations {
 	static validatesignup(req, res, next) {
 		const {
@@ -68,6 +71,88 @@ class Validations {
 		const checkEmail = await Usermodel.login(email);
 		if (!checkEmail) {
 			return reqResponses.handleError(404, 'No email found', res);
+		}
+		next();
+	}
+
+	static validateTrip(req, res, next) {
+		const {
+			seatingCapacity,
+			busLicensenumber,
+			origin,
+			destination,
+			tripDate,
+			fare,
+		} = req.body;
+		if (!seatingCapacity || !busLicensenumber || !origin || !destination || !tripDate || !fare) {
+			return reqResponses.handleError(400, 'Ensure you have: bus seatingCapacity, busLicensenumber, origin, destination, tripDate and fare fields', res);
+		}
+		const data = req.body;
+		const schema = Joi.object().keys({
+			seatingCapacity: Joi.string().regex(/^[1-9]+$/).required().error(new Error('Invalid seating capacity. ensure you have number only e.g 12 or 20')),
+
+			busLicensenumber: Joi.string().required().regex(/^([a-zA-Z])+(\s)+[0-999]+$/).error(new Error('Invalid bus license number.should have this format e.g RAD 123')),
+
+			origin: Joi.string().regex(/^[a-zA-Z]{3,}$/).required().error(new Error('Invalid ORIGIN value. ensure you have strings only.eg kampala')),
+
+			destination: Joi.string().regex(/^[a-zA-Z]{3,}$/).required().error(new Error('Invalid DESTINATION value. ensure you have strings only .eg nairobi')),
+			// eslint-disable-next-line newline-per-chained-call
+			tripDate: Joi.date().min(new Date()).format(['DD/MM/YYYY', 'DD-MM-YYYY']).iso().required().error(new Error('Invalid DATE. enter a current date and follow this format: DD/MM/YYYY or DD-MM-YYYY e.g 01/01/2019 or 01-01-2019')),
+
+			fare: Joi.string().regex(/^[0-9]*$/).required().error(new Error('Invalid fare value. ensure you have numbers only. eg 2000')),
+		});
+		Joi.validate(data, schema, (err) => {
+			if (err) {
+				return res.status(400).json({
+					message: err.message,
+				});
+			}
+			next();
+		});
+	}
+
+	static validateTripBooking(req, res, next) {
+		const {
+			tripId,
+			seatNumber,
+		} = req.body;
+
+		let re;
+
+		if (tripId === '' || seatNumber === '') {
+			return reqResponses.handleError(400, 'Ensure you have Tripid and Seatnumber you want to book.', res);
+		}
+
+		if (tripId) {
+			// eslint-disable-next-line radix
+			re = /^[0-9]*$/;
+			if (!re.test(tripId)) return reqResponses.handleError(400, 'Ensure tripid is a number e.g 1,2,3 not a string or decimal e.g 0.9 or 9.8', res);
+		}
+
+		if (seatNumber) {
+			// eslint-disable-next-line radix
+			re = /^[0-9]*$/;
+			if (!re.test(seatNumber)) return reqResponses.handleError(400, 'Ensure seatNumber is a number e.g 1,2,3 not a string or decimal e.g 0.9 or 9.8', res);
+		}
+		next();
+	}
+
+	static checkId(req, res, next) {
+		const { id } = req.params;
+		let re;
+		if (id) {
+			re = /^[0-9]*$/;
+			if (!re.test(id)) return reqResponses.handleError(400, 'enter a valid id, not a string', res);
+		}
+		next();
+	}
+
+	static checkRoute(req, res, next) {
+		const { route } = req.params;
+		let re;
+		if (route) {
+			re = /^[a-zA-Z]{3,}$/;
+			if (!re.test(route)) return reqResponses.handleError(400, 'enter a valid route. not less than 3 characters and should be letters only', res);
 		}
 		next();
 	}

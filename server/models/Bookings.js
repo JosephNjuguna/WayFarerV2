@@ -27,7 +27,7 @@ class Bookings {
 				this.result = `This trip id: ${tripInfo} is canceled and not available.`;
 				return false;
 			}
-			if (obj.tripdate < date.modernDate()) {
+			if (new Date(obj.tripdate) < new Date(date.modernDate())) {
 				this.result = `Please select a current trip. this trip already happened on date ${obj.tripdate}.`;
 				return false;
 			} else {

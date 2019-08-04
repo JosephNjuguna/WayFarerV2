@@ -72,17 +72,124 @@ describe('/TRIPS AND BOOKINGS', () => {
 			});
 	});
 
+	it('should show that all seats are required', (done) => {
+		chai.request(app)
+			.post('/api/v1/trips')
+			.set('authorization', `Bearer ${adminToken}`)
+			.send({})
+			.end((err, res) => {
+				res.should.have.status(400);
+				if (err) return done();
+				done();
+			});
+	});
+
+	it('should show that seating capacity is invalid', (done) => {
+		chai.request(app)
+			.post('/api/v1/trips')
+			.set('authorization', `Bearer ${adminToken}`)
+			.send({
+				seatingCapacity: 'fkfjkjfd',
+				busLicensenumber: 'RAD 129',
+				origin: 'KIGALI',
+				destination: 'NAIROBI',
+				tripDate: '01/07/2019',
+				fare: '3500',
+			})
+			.end((err, res) => {
+				res.should.have.status(400);
+				if (err) return done();
+				done();
+			});
+	});
+
+	it('should show that seating capacity is invalid', (done) => {
+		chai.request(app)
+			.post('/api/v1/trips')
+			.set('authorization', `Bearer ${adminToken}`)
+			.send({
+				seatingCapacity: '12',
+				busLicensenumber: 'RAD129',
+				origin: 'KIGALI',
+				destination: 'NAIROBI',
+				tripDate: '01/07/2019',
+				fare: '3500',
+			})
+			.end((err, res) => {
+				res.should.have.status(400);
+				if (err) return done();
+				done();
+			});
+	});
+
+	it('should show that origin is invalid', (done) => {
+		chai.request(app)
+			.post('/api/v1/trips')
+			.set('authorization', `Bearer ${adminToken}`)
+			.send({
+				seatingCapacity: 'fkfjkjfd',
+				busLicensenumber: 'RAD 129',
+				origin: '121331edasdce',
+				destination: 'NAIROBI',
+				tripDate: '01/07/2019',
+				fare: '3500',
+			})
+			.end((err, res) => {
+				res.should.have.status(400);
+				if (err) return done();
+				done();
+			});
+	});
+
+	it('should show that destination is invalid', (done) => {
+		chai.request(app)
+			.post('/api/v1/trips')
+			.set('authorization', `Bearer ${adminToken}`)
+			.send({
+				seatingCapacity: 'fkfjkjfd',
+				busLicensenumber: 'RAD 129',
+				origin: 'Kigali',
+				destination: '121331edasdce',
+				tripDate: '01/07/2019',
+				fare: '3500',
+			})
+			.end((err, res) => {
+				res.should.have.status(400);
+				if (err) return done();
+				done();
+			});
+	});
+
 	it('should show that the date is invalid or its a past date', (done) => {
 		chai.request(app)
 			.post('/api/v1/trips')
 			.set('authorization', `Bearer ${adminToken}`)
 			.send({
-				seatingCapacity: 14,
+				seatingCapacity: '14',
 				busLicensenumber: 'RAD 129',
 				origin: 'KIGALI',
 				destination: 'NAIROBI',
-				tripDate: '1/7/2019',
-				fare: 3500,
+				tripDate: '01/07/2019',
+				fare: '3500',
+			})
+			.end((err, res) => {
+				res.should.have.status(400);
+				if (err) return done();
+				done();
+			});
+	});
+
+	it('should show that fare is invalid', (done) => {
+		chai.request(app)
+			.post('/api/v1/trips')
+			.set('authorization', `Bearer ${adminToken}`)
+			.send({
+				seatingCapacity: '14',
+				busLicensenumber: 'RAD 129',
+				origin: 'KIGALI',
+				destination: 'NAIROBI',
+				tripDate: '01/07/2019',
+				fare: 'dkjknmekrkj',
 			})
 			.end((err, res) => {
 				res.should.have.status(400);
@@ -96,12 +203,12 @@ describe('/TRIPS AND BOOKINGS', () => {
 			.post('/api/v1/trips')
 			.set('authorization', `Bearer ${adminToken}`)
 			.send({
-				seatingCapacity: 14,
+				seatingCapacity: '14',
 				busLicensenumber: 'RAD 129',
 				origin: 'KIGALI',
 				destination: 'NAIROBI',
-				tripDate: '31/8/2019',
-				fare: 3500,
+				tripDate: '31/08/2019',
+				fare: '3500',
 			})
 			.end((err, res) => {
 				res.should.have.status(201);
@@ -115,15 +222,29 @@ describe('/TRIPS AND BOOKINGS', () => {
 			.post('/api/v1/trips')
 			.set('authorization', `Bearer ${adminToken}`)
 			.send({
-				seatingCapacity: 14,
+				seatingCapacity: '14',
 				busLicensenumber: 'RAD 129',
 				origin: 'KIGALI',
 				destination: 'NAIROBI',
-				tripDate: '31/8/2019',
-				fare: 3500,
+				tripDate: '31/08/2019',
+				fare: '3500',
 			})
 			.end((err, res) => {
 				res.should.have.status(409);
+				if (err) return done();
+				done();
+			});
+	});
+
+	it('should check id is not valid', (done) => {
+		chai.request(app)
+			.patch(`/api/v1/trips/onehundreds/cancel`)
+			.set('authorization', `Bearer ${adminToken}`)
+			.send({
+				status: 'canceled',
+			})
+			.end((err, res) => {
+				res.should.have.status(400);
 				if (err) return done();
 				done();
 			});
@@ -187,12 +308,34 @@ describe('/TRIPS AND BOOKINGS', () => {
 			});
 	});
 
+	it('should show invalid trip origin', (done) => {
+		chai.request(app)
+			.get('/api/v1/origin/1234')
+			.set('authorization', `Bearer ${userToken}`)
+			.end((err, res) => {
+				res.should.have.status(400);
+				if (err) return done();
+				done();
+			});
+	});
+
 	it('should show trip not found by origin', (done) => {
 		chai.request(app)
 			.get('/api/v1/origin/NAIROBI')
 			.set('authorization', `Bearer ${userToken}`)
 			.end((err, res) => {
 				res.should.have.status(404);
+				if (err) return done();
+				done();
+			});
+	});
+
+	it('should show invalid trip destination', (done) => {
+		chai.request(app)
+			.get('/api/v1/destination/1234')
+			.set('authorization', `Bearer ${userToken}`)
+			.end((err, res) => {
+				res.should.have.status(400);
 				if (err) return done();
 				done();
 			});
@@ -215,6 +358,17 @@ describe('/TRIPS AND BOOKINGS', () => {
 			.set('authorization', `Bearer ${userToken}`)
 			.end((err, res) => {
 				res.should.have.status(404);
+				if (err) return done();
+				done();
+			});
+	});
+
+	it('should check invalid trip id', (done) => {
+		chai.request(app)
+			.get('/api/v1/trips/onetwothree')
+			.set('authorization', `Bearer ${userToken}`)
+			.end((err, res) => {
+				res.should.have.status(400);
 				if (err) return done();
 				done();
 			});
@@ -298,6 +452,66 @@ describe('/TRIPS AND BOOKINGS', () => {
 			});
 	});
 
+	it('should test that tripId input is empty', (done) => {
+		chai.request(app)
+			.post('/api/v1/bookings')
+			.set('authorization', `Bearer ${userToken}`)
+			.send({
+				tripId: '',
+				seatNumber: 1,
+			})
+			.end((err, res) => {
+				res.should.have.status(400);
+				if (err) return done();
+				done();
+			});
+	});
+
+	it('should test that a seatNumber input is empty', (done) => {
+		chai.request(app)
+			.post('/api/v1/bookings')
+			.set('authorization', `Bearer ${userToken}`)
+			.send({
+				tripId: 1,
+				seatNumber: '',
+			})
+			.end((err, res) => {
+				res.should.have.status(400);
+				if (err) return done();
+				done();
+			});
+	});
+
+	it('should test a valid tripid', (done) => {
+		chai.request(app)
+			.post('/api/v1/bookings')
+			.set('authorization', `Bearer ${userToken}`)
+			.send({
+				tripId: 1.9,
+				seatNumber: 1,
+			})
+			.end((err, res) => {
+				res.should.have.status(400);
+				if (err) return done();
+				done();
+			});
+	});
+
+	it('should test a valid seatNumber', (done) => {
+		chai.request(app)
+			.post('/api/v1/bookings')
+			.set('authorization', `Bearer ${userToken}`)
+			.send({
+				tripId: 1,
+				seatNumber: '13lkjv',
+			})
+			.end((err, res) => {
+				res.should.have.status(400);
+				if (err) return done();
+				done();
+			});
+	});
+
 	it('should successfully book a trip', (done) => {
 		chai.request(app)
 			.post('/api/v1/bookings')
@@ -361,12 +575,51 @@ describe('/TRIPS AND BOOKINGS', () => {
 			});
 	});
 
+	it('should successfully invalid booking id', (done) => {
+		chai.request(app)
+			.delete('/api/v1/bookings/one')
+			.set('authorization', `Bearer ${userToken}`)
+			.end((err, res) => {
+				res.should.have.status(400);
+				if (err) return done();
+				done();
+			});
+	});
+
 	it('should successfully show user that trip booking is deleted', (done) => {
 		chai.request(app)
 			.delete('/api/v1/bookings/1')
 			.set('authorization', `Bearer ${userToken}`)
 			.end((err, res) => {
 				res.should.have.status(200);
+				if (err) return done();
+				done();
+			});
+	});
+
+	it('should show invalid trip id', (done) => {
+		chai.request(app)
+			.patch(`/api/v1/trips/adrer/cancel`)
+			.set('authorization', `Bearer ${adminToken}`)
+			.send({
+				status: 'canceled',
+			})
+			.end((err, res) => {
+				res.should.have.status(400);
+				if (err) return done();
+				done();
+			});
+	});
+
+	it('should show  trip id not found', (done) => {
+		chai.request(app)
+			.patch(`/api/v1/trips/${100000}/cancel`)
+			.set('authorization', `Bearer ${adminToken}`)
+			.send({
+				status: 'canceled',
+			})
+			.end((err, res) => {
+				res.should.have.status(404);
 				if (err) return done();
 				done();
 			});
