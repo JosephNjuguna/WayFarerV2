@@ -22,20 +22,16 @@ class Trips {
 			fare: parseInt(this.payload.fare),
 			status: 'active',
 		};
-		if (new Date(this.payload.tripDate) < new Date(date.modernDate())) {
-			this.result = { status: 400, message: `Please enter a valid date. You have entered a past date.` };
-			return false;
+		const obj = db.find(o => o.busLicensenumber === this.payload.busLicensenumber || o.tripDate === this.payload.tripDate);
+		if (!obj) {
+			db.push(bookingData);
+			this.result = bookingData;
+			return true;
 		} else {
-			const obj = db.find(o => o.busLicensenumber === this.payload.busLicensenumber || o.tripDate === this.payload.tripDate);
-			if (!obj) {
-				db.push(bookingData);
-				this.result = bookingData;
-				return true;
-			} else {
-				this.result = { status: 409, message: 'Trip already exist.' };
-				return false;
-			}
+			this.result = { status: 409, message: 'Trip already exist.' };
+			return false;
 		}
+
 	}
 
 	async cancelTrip() {
