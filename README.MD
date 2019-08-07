@@ -44,7 +44,7 @@ Wayfarer is an online bus booking platform.
 
 ### Heroku link Example
 
-[WayFarer API Endpoints](https://v1wayfarer.herokuapp.com)
+[WayFarer API Endpoints](https://v1wayfarer.herokuapp.com/api-docs)
 
 ## Getting Started
 
