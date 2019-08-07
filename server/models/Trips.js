@@ -58,7 +58,7 @@ class Trips {
 		return true;
 	}
 
-	static async viewAlltrips() {
+	async viewAlltrips() {
 		if (db.length === 0) {
 			return false;
 		}
@@ -66,7 +66,7 @@ class Trips {
 		return this.result;
 	}
 
-	static async viewActivetrip() {
+	async viewActivetrips() {
 		// eslint-disable-next-line radix
 		const obj = db.find(o => o.status === 'active');
 		if (!obj) {
@@ -76,9 +76,9 @@ class Trips {
 		return this.result;
 	}
 
-	static async viewSingletrip(tripId) {
+	async viewSingletrip() {
 		// eslint-disable-next-line radix
-		const id = parseInt(tripId);
+		const id = parseInt(this.payload);
 		const obj = db.find(o => o.id === id);
 		if (!obj) {
 			return false;
@@ -87,9 +87,9 @@ class Trips {
 		return this.result;
 	}
 
-	static async viewSingleActivetrip(tripId) {
+	async viewSingleActivetrip() {
 		// eslint-disable-next-line radix
-		const id = parseInt(tripId);
+		const id = parseInt(this.payload);
 		const obj = db.find(o => o.id === id && o.status === 'active');
 		if (!obj) {
 			return false;
