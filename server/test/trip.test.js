@@ -26,6 +26,17 @@ describe('/TRIPS AND BOOKINGS', () => {
 	it('should check no trips record', (done) => {
 		chai.request(app)
 			.get('/api/v1/trips')
+			.set('authorization', `Bearer ${adminToken}`)
+			.end((err, res) => {
+				res.should.have.status(404);
+				if (err) return done();
+				done();
+			});
+	});
+
+	it('should check no active trips record by user', (done) => {
+		chai.request(app)
+			.get('/api/v1/trips')
 			.set('authorization', `Bearer ${userToken}`)
 			.end((err, res) => {
 				res.should.have.status(404);
@@ -275,7 +286,7 @@ describe('/TRIPS AND BOOKINGS', () => {
 			});
 	});
 
-	it('should check all trips', (done) => {
+	it('should check all trips admin', (done) => {
 		chai.request(app)
 			.get('/api/v1/trips')
 			.set('authorization', `Bearer ${userToken}`)
@@ -286,7 +297,29 @@ describe('/TRIPS AND BOOKINGS', () => {
 			});
 	});
 
+	it('should check only active trips', (done) => {
+		chai.request(app)
+			.get('/api/v1/trips')
+			.set('authorization', `Bearer ${adminToken}`)
+			.end((err, res) => {
+				res.should.have.status(200);
+				if (err) return done();
+				done();
+			});
+	});
+
 	it('should check single trip', (done) => {
+		chai.request(app)
+			.get('/api/v1/trips/1')
+			.set('authorization', `Bearer ${adminToken}`)
+			.end((err, res) => {
+				res.should.have.status(200);
+				if (err) return done();
+				done();
+			});
+	});
+
+	it('should check single active trip user', (done) => {
 		chai.request(app)
 			.get('/api/v1/trips/1')
 			.set('authorization', `Bearer ${userToken}`)
