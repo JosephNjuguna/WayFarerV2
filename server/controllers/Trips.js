@@ -1,4 +1,5 @@
 /* eslint-disable consistent-return */
+import jwt from 'jsonwebtoken';
 import TripModel from '../models/Trips';
 import reqResponses from '../helpers/Responses';
 
@@ -42,17 +43,38 @@ class Trip {
 	}
 
 	static async viewAlltrips(req, res) {
-		const viewTrips = await TripModel.viewAlltrips();
-		if (!viewTrips) {
+		const token = req.headers.authorization.split(' ')[1];
+		const decoded = jwt.verify(token, process.env.JWT_KEY);
+		req.userData = decoded;
+		if (req.userData.isAdmin === true) {
+			const viewTrips = new TripModel();
+			if (!await viewTrips.viewAlltrips()) {
+				return reqResponses.handleError(404, 'No Trips record found', res);
+			}
+			return reqResponses.handleSuccess(200, 'success', viewTrips, res);
+		}
+		const viewTrips = new TripModel();
+		if (!await viewTrips.viewActivetrips()) {
 			return reqResponses.handleError(404, 'No Trips record found', res);
 		}
 		return reqResponses.handleSuccess(200, 'success', viewTrips, res);
 	}
 
 	static async viewSingletrip(req, res) {
+		const token = req.headers.authorization.split(' ')[1];
+		const decoded = jwt.verify(token, process.env.JWT_KEY);
+		req.userData = decoded;
+		if (req.userData.isAdmin === true) {
+			const tripId = req.params.id;
+			const singleTrip = new TripModel(tripId);
+			if (!await singleTrip.viewSingletrip()) {
+				return reqResponses.handleError(404, 'Trip Id not found', res);
+			}
+			return reqResponses.handleSuccess(200, 'success', singleTrip, res);
+		}
 		const tripId = req.params.id;
-		const singleTrip = await TripModel.viewSingletrip(tripId);
-		if (!singleTrip) {
+		const singleTrip = new TripModel(tripId);
+		if (!await singleTrip.viewSingleActivetrip()) {
 			return reqResponses.handleError(404, 'Trip Id not found', res);
 		}
 		return reqResponses.handleSuccess(200, 'success', singleTrip, res);

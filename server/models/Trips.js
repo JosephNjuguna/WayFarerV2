@@ -2,7 +2,6 @@
 /* eslint-disable no-else-return */
 /* eslint-disable radix */
 import db from '../Db/trips';
-import date from '../helpers/Date';
 
 class Trips {
 	constructor(payload = null) {
@@ -22,7 +21,7 @@ class Trips {
 			fare: parseInt(this.payload.fare),
 			status: 'active',
 		};
-		const obj = db.find(o => o.busLicensenumber === this.payload.busLicensenumber || o.tripDate === this.payload.tripDate);
+		const obj = db.find(o => o.busLicensenumber === this.payload.busLicensenumber && o.tripDate === this.payload.tripDate);
 		if (!obj) {
 			db.push(bookingData);
 			this.result = bookingData;
@@ -31,7 +30,6 @@ class Trips {
 			this.result = { status: 409, message: 'Trip already exist.' };
 			return false;
 		}
-
 	}
 
 	async cancelTrip() {
@@ -60,7 +58,7 @@ class Trips {
 		return true;
 	}
 
-	static async viewAlltrips() {
+	async viewAlltrips() {
 		if (db.length === 0) {
 			return false;
 		}
@@ -68,10 +66,31 @@ class Trips {
 		return this.result;
 	}
 
-	static async viewSingletrip(tripId) {
+	async viewActivetrips() {
 		// eslint-disable-next-line radix
-		const id = parseInt(tripId);
+		const obj = db.find(o => o.status === 'active');
+		if (!obj) {
+			return false;
+		}
+		this.result = obj;
+		return this.result;
+	}
+
+	async viewSingletrip() {
+		// eslint-disable-next-line radix
+		const id = parseInt(this.payload);
 		const obj = db.find(o => o.id === id);
+		if (!obj) {
+			return false;
+		}
+		this.result = obj;
+		return this.result;
+	}
+
+	async viewSingleActivetrip() {
+		// eslint-disable-next-line radix
+		const id = parseInt(this.payload);
+		const obj = db.find(o => o.id === id && o.status === 'active');
 		if (!obj) {
 			return false;
 		}
