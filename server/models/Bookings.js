@@ -18,43 +18,41 @@ class Bookings {
 		if (!obj) {
 			this.result = `Trip Id : ${tripInfo} is not available`;
 			return false;
-		} else {
-			if (seatNo > obj.seatingCapacity || seatNo <= 0) {
-				this.result = `Please select seat number less than ${obj.seatingCapacity} and not 0`;
-				return false;
-			}
-			if (obj.status === 'canceled') {
-				this.result = `This trip id: ${tripInfo} is canceled and not available.`;
-				return false;
-			}
-			if (new Date(obj.tripdate) < new Date(date.modernDate())) {
-				this.result = `Please select a current trip. this trip already happened on date ${obj.tripdate}.`;
-				return false;
-			} else {
-				const findSeat = db.find(o => o.seatNumber === seatNo && o.tripId === tripInfo);
-				if (findSeat) {
-					this.result = `Seat number : ${findSeat.seatNumber} already taken. choose another seat`;
-					return false;
-				} else {
-					const bookingid = db.length + 1;
-					const bookingData = {
-						bookingId: bookingid,
-						tripId: obj.id,
-						userId: this.payload.id,
-						busLicensenumber: obj.busLicensenumber,
-						tripdate: obj.tripDate,
-						firstname: this.payload.firstname,
-						lastname: this.payload.lastname,
-						email: this.payload.email,
-						seatNumber: seatNo,
-					};
-					db.push(bookingData);
-					this.result = bookingData;
-					return true;
-				}
-			}
 		}
+		if (seatNo > obj.seatingCapacity || seatNo <= 0) {
+			this.result = `Please select seat number less than ${obj.seatingCapacity} and not 0`;
+			return false;
+		}
+		if (obj.status === 'canceled') {
+			this.result = `This trip id: ${tripInfo} is canceled and not available.`;
+			return false;
+		}
+		if (new Date(obj.tripdate) < new Date(date.modernDate())) {
+			this.result = `Please select a current trip. this trip already happened on date ${obj.tripdate}.`;
+			return false;
+		}
+		const findSeat = db.find(o => o.seatNumber === seatNo && o.tripId === tripInfo);
+		if (findSeat) {
+			this.result = `Seat number : ${findSeat.seatNumber} already taken. choose another seat`;
+			return false;
+		}
+		const bookingid = db.length + 1;
+		const bookingData = {
+			bookingId: bookingid,
+			tripId: obj.id,
+			userId: this.payload.id,
+			busLicensenumber: obj.busLicensenumber,
+			tripdate: obj.tripDate,
+			firstname: this.payload.firstname,
+			lastname: this.payload.lastname,
+			email: this.payload.email,
+			seatNumber: seatNo,
+		};
+		db.push(bookingData);
+		this.result = bookingData;
+		return true;
 	}
+
 
 	async userAllBooking() {
 		const obj = await db.filter(o => o.email === this.payload.email);
