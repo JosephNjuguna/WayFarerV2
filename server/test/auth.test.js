@@ -29,7 +29,6 @@ describe('/AUTHENTICATION', () => {
 
 	after('after all test', (done) => {
 		Db.query('DELETE FROM users');
-		Db.query('DROP TABLE IF EXISTS users');
 		done();
 	});
 
