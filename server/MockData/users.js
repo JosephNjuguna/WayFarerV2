@@ -1,10 +1,16 @@
+import dotenv from 'dotenv';
+import EncryptData from '../helpers/Encrypt';
+
+const hashedPassword = EncryptData.generateHash(process.env.password);
+
+dotenv.config();
 const users = [
 	{
 		id: 1,
 		firstname: 'main',
 		lastname: 'admin',
 		email: 'admin123@gmail.com',
-		password: '$2b$10$RimQIoicGM6VRa8zGCgNlOeiimxeBllhyfPLE7OfSo1blRlTY4wGC',
+		password: hashedPassword,
 		isAdmin: true,
 	},
 	{
@@ -12,7 +18,7 @@ const users = [
 		firstname: 'Joseph',
 		lastname: 'Njuguna',
 		email: 'josephnjuguna482@gmail.com',
-		password: '$2b$10$RimQIoicGM6VRa8zGCgNlOeiimxeBllhyfPLE7OfSo1blRlTY4wGC',
+		password: hashedPassword,
 		isAdmin: false,
 	},
 ];

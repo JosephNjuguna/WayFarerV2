@@ -1,12 +1,38 @@
 import chai from 'chai';
 import chaiHttp from 'chai-http';
+import dotenv from 'dotenv';
 import app from '../../app';
+import Db from '../Db/Db';
 
+import EncryptData from '../helpers/Encrypt';
+
+dotenv.config();
 chai.should();
 chai.use(chaiHttp);
 
+const hashedPassword = EncryptData.generateHash(process.env.password);
+
+const user = {
+	firstname: 'test',
+	lastname: 'test',
+	email: 'test2@mail.com',
+	password: hashedPassword,
+	isAdmin: false,
+};
 
 describe('/AUTHENTICATION', () => {
+	before('add user', async (done) => {
+		Db.query('INSERT INTO users (firstname, lastname, email, password, isAdmin) values($1, $2, $3, $4, $5)',
+			[user.firstname, user.lastname, user.email, user.password, user.isAdmin]);
+		done();
+	});
+
+	after('after all test', (done) => {
+		Db.query('DELETE FROM users');
+		Db.query('DROP TABLE IF EXISTS users');
+		done();
+	});
+
 	describe('/POST signup', () => {
 		it('should check user has firstname', (done) => {
 			chai.request(app)
@@ -94,7 +120,7 @@ describe('/AUTHENTICATION', () => {
 				.send({
 					firstname: 'Joseph',
 					lastname: 'Njuguna',
-					email: 'josephnjuguna482@gmail.com',
+					email: 'test1@mail.com',
 					password: 'qwerQ@qwerre123',
 				})
 				.end((err, res) => {
@@ -151,7 +177,7 @@ describe('/AUTHENTICATION', () => {
 			chai.request(app)
 				.post('/api/v1/login')
 				.send({
-					email: 'test1@mail.com',
+					email: 'josephnjuguna482@gmail.com',
 					password: 'qwerQ@qwerre123',
 				}).end((err, res) => {
 					res.should.have.status(200);
@@ -164,8 +190,8 @@ describe('/AUTHENTICATION', () => {
 			chai.request(app)
 				.post('/api/v1/login')
 				.send({
-					email: 'test1@mail.com',
-					password: 'qwerQ@qwerre13',
+					email: 'josephnjuguna482@gmail.com',
+					password: 'qwerQ@qwerre1VFSdcSvcVS3',
 				}).end((err, res) => {
 					res.should.have.status(401);
 					if (err) return done();
