@@ -51,13 +51,13 @@ class Trip {
 			if (!await viewTrips.viewAlltrips()) {
 				return reqResponses.handleError(404, 'No Trips record found', res);
 			}
-			return reqResponses.handleSuccess(200, 'success', viewTrips, res);
+			return reqResponses.handleSuccess(200, 'success', viewTrips.result, res);
 		}
 		const viewTrips = new TripModel();
 		if (!await viewTrips.viewActivetrips()) {
 			return reqResponses.handleError(404, 'No Trips record found', res);
 		}
-		return reqResponses.handleSuccess(200, 'success', viewTrips, res);
+		return reqResponses.handleSuccess(200, 'success', viewTrips.result, res);
 	}
 
 	static async viewSingletrip(req, res) {

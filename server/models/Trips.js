@@ -68,7 +68,7 @@ class Trips {
 
 	async viewActivetrips() {
 		// eslint-disable-next-line radix
-		const obj = db.find(o => o.status === 'active');
+		const obj = db.filter(o => o.status === 'active');
 		if (!obj) {
 			return false;
 		}
