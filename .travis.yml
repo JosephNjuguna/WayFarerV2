@@ -4,6 +4,9 @@ node_js:
 cache: 
 directories:
 - node_modules
+before_script:
+  - npm install
+  - psql -c 'create database wayfarer1_test;' -U postgres
 script:
 - npm run test
 after_success:
