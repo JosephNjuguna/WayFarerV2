@@ -89,7 +89,7 @@ class Validations {
 		}
 		const data = req.body;
 		const schema = Joi.object().keys({
-			seatingCapacity: Joi.string().regex(/^[1-9]+$/).required().error(new Error('Invalid seating capacity. ensure you have number only e.g 12 or 20')),
+			seatingCapacity: Joi.string().regex(/^[0-9]*[1-9][0-9]*$/).required().error(new Error('Invalid seating capacity. ensure you have number only e.g 12 or 20')),
 
 			busLicensenumber: Joi.string().required().regex(/^([a-zA-Z])+(\s)+[0-999]+$/).error(new Error('Invalid bus license number.should have this format e.g RAD 123')),
 
@@ -99,7 +99,7 @@ class Validations {
 			// eslint-disable-next-line newline-per-chained-call
 			tripDate: Joi.date().min(new Date()).format(['DD/MM/YYYY', 'DD-MM-YYYY']).iso().required().error(new Error('Invalid DATE. enter a current date and follow this format: DD/MM/YYYY or DD-MM-YYYY e.g 01/01/2019 or 01-01-2019')),
 
-			fare: Joi.string().regex(/^[0-9]*$/).required().error(new Error('Invalid fare value. ensure you have numbers only. eg 2000')),
+			fare: Joi.string().regex(/^[0-9]*[1-9][0-9]*$/).required().error(new Error('Invalid fare value. ensure you have numbers only. eg 2000')),
 		});
 		Joi.validate(data, schema, (err) => {
 			if (err) {
