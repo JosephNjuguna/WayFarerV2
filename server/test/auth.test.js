@@ -176,7 +176,7 @@ describe('/AUTHENTICATION', () => {
 			chai.request(app)
 				.post('/api/v1/login')
 				.send({
-					email: 'josephnjuguna482@gmail.com',
+					email: 'test1@mail.com',
 					password: 'qwerQ@qwerre123',
 				}).end((err, res) => {
 					res.should.have.status(200);
@@ -189,7 +189,7 @@ describe('/AUTHENTICATION', () => {
 			chai.request(app)
 				.post('/api/v1/login')
 				.send({
-					email: 'josephnjuguna482@gmail.com',
+					email: 'test1@mail.com',
 					password: 'qwerQ@qwerre1VFSdcSvcVS3',
 				}).end((err, res) => {
 					res.should.have.status(401);
