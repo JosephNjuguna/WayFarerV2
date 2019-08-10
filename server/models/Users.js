@@ -1,6 +1,5 @@
 /* eslint-disable max-len */
 import Db from '../Db/Db';
-import db from '../MockData/users';
 
 class UsersModel {
 	constructor(payload = null) {
