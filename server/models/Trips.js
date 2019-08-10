@@ -2,6 +2,7 @@
 /* eslint-disable no-else-return */
 /* eslint-disable radix */
 import db from '../Db/trips';
+import Db from '../Db/Db';
 
 class Trips {
 	constructor(payload = null) {
@@ -9,27 +10,22 @@ class Trips {
 		this.result = null;
 	}
 
-	async createTrip() {
-		const tripId = db.length + 1;
-		const bookingData = {
-			id: tripId,
-			seatingCapacity: this.payload.seatingCapacity,
-			busLicensenumber: this.payload.busLicensenumber,
-			origin: this.payload.origin,
-			destination: this.payload.destination,
-			tripDate: this.payload.tripDate,
-			fare: parseInt(this.payload.fare),
-			status: 'active',
-		};
-		const obj = db.find(o => o.busLicensenumber === this.payload.busLicensenumber && o.tripDate === this.payload.tripDate);
-		if (!obj) {
-			db.push(bookingData);
-			this.result = bookingData;
-			return true;
-		} else {
-			this.result = { status: 409, message: 'Trip already exist.' };
+	static async findTrip(buslicensenumber, tripdate) {
+		const sql = `SELECT * FROM trips WHERE buslicensenumber ='${buslicensenumber}' AND  tripdate = '${tripdate}'`;
+		const { rows } = await Db.query(sql);
+		if (rows.length === 0) {
 			return false;
 		}
+		return true;
+	}
+
+	async createTrip() {
+		const values = [this.payload.busLicensenumber, this.payload.seatingCapacity, this.payload.origin, this.payload.destination, this.payload.tripDate, this.payload.fare, 'active'];
+		const sql = 'INSERT INTO trips (buslicensenumber, seatingcapacity, origin, destination, tripdate, fare, status ) VALUES($1, $2, $3, $4, $5, $6, $7) returning *';
+		const { rows } = await Db.query(sql, values);
+		// eslint-disable-next-line prefer-destructuring
+		this.result = rows[0];
+		return true;
 	}
 
 	async cancelTrip() {

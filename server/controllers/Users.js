@@ -18,7 +18,7 @@ class Users {
 				firstname, lastname, email, hashedPassword,
 			});
 			if (await addUser.signup()) {
-				const token = jwtGen.generateToken(addUser.result.id, addUser.result.email, addUser.result.firstname, addUser.result.lastname);
+				const token = jwtGen.generateToken(addUser.result.id, addUser.result.email, addUser.result.firstname, addUser.result.lastname, addUser.result.isadmin);
 				const user = {
 					firstname: addUser.result.firstname,
 					lastname: addUser.result.lastname,
@@ -41,10 +41,10 @@ class Users {
 			const password = req.body.password;
 			const userLogin = await Usermodel.login(incomingEmail);
 			const {
-				id, email, firstname, lastname, isAdmin,
+				id, email, firstname, lastname, isadmin,
 			} = userLogin;
 			if (EncryptData.validPassword(password, userLogin.password)) {
-				const token = jwtGen.generateToken(id, email, firstname, lastname, isAdmin);
+				const token = jwtGen.generateToken(id, email, firstname, lastname, isadmin);
 				const userdata = {
 					id,
 					firstname,

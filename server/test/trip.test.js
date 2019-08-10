@@ -4,6 +4,7 @@ import chai from 'chai';
 import chaiHttp from 'chai-http';
 import app from '../../app';
 import Token from '../helpers/Jwt';
+import Db from '../Db/Db';
 
 chai.should();
 chai.use(chaiHttp);
@@ -19,30 +20,9 @@ const adminToken = Token.generateToken(1, 'admin@wayfarer.com', 'admin', 'admin'
 const userToken = Token.generateToken(3, user.email, user.firstname, user.lastname, user.isAdmin);
 
 describe('/TRIPS AND BOOKINGS', () => {
-	before('generate token', async (done) => {
+	after('after all test', (done) => {
+		Db.query('DELETE FROM trips');
 		done();
-	});
-
-	it('should check no trips record', (done) => {
-		chai.request(app)
-			.get('/api/v1/trips')
-			.set('authorization', `Bearer ${adminToken}`)
-			.end((err, res) => {
-				res.should.have.status(404);
-				if (err) return done();
-				done();
-			});
-	});
-
-	it('should check no active trips record by user', (done) => {
-		chai.request(app)
-			.get('/api/v1/trips')
-			.set('authorization', `Bearer ${userToken}`)
-			.end((err, res) => {
-				res.should.have.status(404);
-				if (err) return done();
-				done();
-			});
 	});
 
 	it('should show that token is required', (done) => {
@@ -354,7 +334,7 @@ describe('/TRIPS AND BOOKINGS', () => {
 
 	it('should show trip not found by origin', (done) => {
 		chai.request(app)
-			.get('/api/v1/origin/NAIROBI')
+			.get('/api/v1/origin/london')
 			.set('authorization', `Bearer ${userToken}`)
 			.end((err, res) => {
 				res.should.have.status(404);
@@ -376,7 +356,7 @@ describe('/TRIPS AND BOOKINGS', () => {
 
 	it('should filter trip by destination', (done) => {
 		chai.request(app)
-			.get('/api/v1/destination/NAIROBI')
+			.get('/api/v1/destination/KIGALI')
 			.set('authorization', `Bearer ${userToken}`)
 			.end((err, res) => {
 				res.should.have.status(200);
@@ -387,7 +367,7 @@ describe('/TRIPS AND BOOKINGS', () => {
 
 	it('should show trip not found by destination', (done) => {
 		chai.request(app)
-			.get('/api/v1/destination/KIGALI')
+			.get('/api/v1/destination/venice')
 			.set('authorization', `Bearer ${userToken}`)
 			.end((err, res) => {
 				res.should.have.status(404);

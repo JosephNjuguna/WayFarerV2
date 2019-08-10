@@ -5,7 +5,7 @@ import validate from '../middleware/Validations';
 
 const router = express.Router();
 
-router.post('/trips', Auth.checkAdmin, validate.validateTrip, controllers.createTrip);
+router.post('/trips', Auth.checkAdmin, validate.validateTrip, validate.checkTrip, controllers.createTrip);
 router.patch('/trips/:id/cancel', Auth.checkAdmin, validate.checkId, controllers.cancelTrip);
 router.get('/trips', Auth.checkUser, controllers.viewAlltrips);
 router.get('/trips/:id', Auth.checkUser, validate.checkId, controllers.viewSingletrip);
