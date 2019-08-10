@@ -27,12 +27,15 @@ class UsersModel {
 	}
 
 	static async login(email) {
-		const obj = db.find(o => o.email === email);
-		if (!obj) {
+		const sql = `SELECT * FROM users WHERE email='${email}'`;
+		const {
+			rows,
+		} = await Db.query(sql);
+		if (rows.length === 0) {
 			return false;
 		}
-		this.result = obj;
-		return this.result;
+		const result = rows[0];
+		return result;
 	}
 }
 
