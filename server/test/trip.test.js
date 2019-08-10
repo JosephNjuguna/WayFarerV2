@@ -14,9 +14,9 @@ const user = {
 	firstname: 'test',
 	lastname: 'test',
 	email: 'test1@mail.com',
-	isAdmin: false,
+	isAdmin: 'false',
 };
-const adminToken = Token.generateToken(1, 'admin@wayfarer.com', 'admin', 'admin', true);
+const adminToken = Token.generateToken(1, 'admin@wayfarer.com', 'admin', 'admin', 'true');
 const userToken = Token.generateToken(3, user.email, user.firstname, user.lastname, user.isAdmin);
 
 describe('/TRIPS AND BOOKINGS', () => {
