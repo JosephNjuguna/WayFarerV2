@@ -288,7 +288,7 @@ describe('/TRIPS AND BOOKINGS', () => {
 			});
 	});
 
-	it('should check single trip', (done) => {
+	it('should show no single trip (admin)', (done) => {
 		chai.request(app)
 			.get('/api/v1/trips/1')
 			.set('authorization', `Bearer ${adminToken}`)
@@ -299,7 +299,29 @@ describe('/TRIPS AND BOOKINGS', () => {
 			});
 	});
 
-	it('should check single active trip user', (done) => {
+	it('should check single trip (admin)', (done) => {
+		chai.request(app)
+			.get('/api/v1/trips/1')
+			.set('authorization', `Bearer ${adminToken}`)
+			.end((err, res) => {
+				res.should.have.status(200);
+				if (err) return done();
+				done();
+			});
+	});
+
+	it('should show no single active trip (user)', (done) => {
+		chai.request(app)
+			.get('/api/v1/trips/1000')
+			.set('authorization', `Bearer ${userToken}`)
+			.end((err, res) => {
+				res.should.have.status(404);
+				if (err) return done();
+				done();
+			});
+	});
+
+	it('should check single active trip (user)', (done) => {
 		chai.request(app)
 			.get('/api/v1/trips/1')
 			.set('authorization', `Bearer ${userToken}`)
