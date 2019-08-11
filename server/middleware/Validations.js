@@ -3,6 +3,7 @@ import BaseJoi from '@hapi/joi';
 import Extension from '@hapi/joi-date';
 import reqResponses from '../helpers/Responses';
 import Usermodel from '../models/Users';
+import TripModel from '../models/Trips';
 
 const Joi = BaseJoi.extend(Extension);
 class Validations {
@@ -111,12 +112,23 @@ class Validations {
 		});
 	}
 
+	static async checkTrip(req, res, next) {
+		const {
+			busLicensenumber,
+			tripDate,
+		} = req.body;
+		const checkTripexist = await TripModel.findTrip(busLicensenumber, tripDate);
+		if (checkTripexist) {
+			return reqResponses.handleError(409, 'Trip Already exist', res);
+		}
+		next();
+	}
+
 	static validateTripBooking(req, res, next) {
 		const {
 			tripId,
 			seatNumber,
 		} = req.body;
-
 		let re;
 
 		if (tripId === '' || seatNumber === '') {
