@@ -490,7 +490,7 @@ describe('/TRIPS AND BOOKINGS', () => {
 				seatNumber: 20,
 			})
 			.end((err, res) => {
-				res.should.have.status(404);
+				res.should.have.status(400);
 				if (err) return done();
 				done();
 			});
