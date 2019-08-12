@@ -1,9 +1,11 @@
+/* eslint-disable no-shadow */
 /* eslint-disable no-else-return */
 /* eslint-disable no-unused-vars */
 /* eslint-disable radix */
 import db from '../Db/bookings';
 import tripDb from '../Db/trips';
 import date from '../helpers/Date';
+import Db from '../Db/Db';
 
 class Bookings {
 	constructor(payload = null) {
@@ -14,45 +16,40 @@ class Bookings {
 	async bookaSeat() {
 		const tripInfo = parseInt(this.payload.tripId);
 		const seatNo = parseInt(this.payload.seatNumber);
-		const obj = tripDb.find(o => o.id === tripInfo);
-		if (!obj) {
-			this.result = `Trip Id : ${tripInfo} is not available`;
+		const obj = `SELECT *  FROM trips WHERE id = '${tripInfo}'`;
+		const { rows } = await Db.query(obj);
+		if (rows.length === 0) {
+			this.result = { status: 404, message: `Trip Id : ${tripInfo} is not available` };
+			return false;
+		} else if (rows[0].status === 'canceled') {
+			this.result = { status: 400, message: `Cancelled. Trip Id : ${tripInfo} is cancelled and not available.` };
 			return false;
 		}
-		if (seatNo > obj.seatingCapacity || seatNo <= 0) {
-			this.result = `Please select seat number less than ${obj.seatingCapacity} and not 0`;
+		const trip = [];
+		trip.push(rows[0]);
+		if (seatNo > rows[0].seatingcapacity || seatNo <= 0) {
+			this.result = { status: 400, message: `Please select seat number less than ${rows[0].seatingcapacity} and not 0` };
 			return false;
 		}
-		if (obj.status === 'canceled') {
-			this.result = `This trip id: ${tripInfo} is canceled and not available.`;
+		if (new Date(rows[0].tripdate) < new Date(date.modernDate())) {
+			this.result = { status: 400, message: `Please select a current trip. this trip already happened on date ${rows[0].tripdate}.` };
 			return false;
+		} else {
+			const sql = `SELECT *  FROM bookings WHERE tripId ='${tripInfo}' AND seatNumber = '${seatNo}'`;
+			const { rows } = await Db.query(sql);
+			if (rows.length > 0) {
+				this.result = { status: 404, message: `Seat number : '${seatNo}' already taken. choose another seat` };
+				return false;
+			} else {
+				// eslint-disable-next-line max-len
+				const values = [tripInfo, this.payload.id, trip[0].buslicensenumber, trip[0].tripdate, this.payload.firstname, this.payload.lastname, this.payload.email, seatNo];
+				const sql2 = 'INSERT INTO bookings (tripid, userid, buslicensenumber, tripdate, firstname, lastname, email, seatnumber ) VALUES($1, $2, $3, $4, $5, $6, $7, $8) returning *';
+				const { rows } = await Db.query(sql2, values);
+				this.result = rows;
+				return true;
+			}
 		}
-		if (new Date(obj.tripdate) < new Date(date.modernDate())) {
-			this.result = `Please select a current trip. this trip already happened on date ${obj.tripdate}.`;
-			return false;
-		}
-		const findSeat = db.find(o => o.seatNumber === seatNo && o.tripId === tripInfo);
-		if (findSeat) {
-			this.result = `Seat number : ${findSeat.seatNumber} already taken. choose another seat`;
-			return false;
-		}
-		const bookingid = db.length + 1;
-		const bookingData = {
-			bookingId: bookingid,
-			tripId: obj.id,
-			userId: this.payload.id,
-			busLicensenumber: obj.busLicensenumber,
-			tripdate: obj.tripDate,
-			firstname: this.payload.firstname,
-			lastname: this.payload.lastname,
-			email: this.payload.email,
-			seatNumber: seatNo,
-		};
-		db.push(bookingData);
-		this.result = bookingData;
-		return true;
 	}
-
 
 	async userAllBooking() {
 		const obj = await db.filter(o => o.email === this.payload.email);

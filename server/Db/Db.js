@@ -26,13 +26,24 @@ class DatabaseInit {
 		this.queryTrips = `CREATE TABLE IF NOT EXISTS trips(
 					id serial PRIMARY KEY,
 					buslicensenumber VARCHAR(128) NOT NULL,
-					seatingcapacity VARCHAR(128) NOT NULL,
+					seatingcapacity INTEGER NOT NULL,
 					origin VARCHAR(128) NOT NULL,
 					destination VARCHAR(128) NOT NULL,
 					tripdate VARCHAR(128) NOT NULL,
-					fare VARCHAR(100)  NOT NULL,
-					status VARCHAR(100)  NOT NULL
+					fare INTEGER NOT NULL,
+					status VARCHAR(100) NOT NULL
 					)`;
+		this.queryBookings = `CREATE TABLE IF NOT EXISTS bookings(
+						id serial PRIMARY KEY,
+						tripid INTEGER NOT NULL,
+						userid INTEGER NOT NULL,
+						buslicensenumber VARCHAR(128) NOT NULL,
+						tripdate VARCHAR(128) NOT NULL,
+						firstname VARCHAR(128) NOT NULL,
+						lastname VARCHAR(128) NOT NULL,
+						email VARCHAR(100) NOT NULL,
+						seatnumber INTEGER NOT NULL
+						)`;
 		this.initDb();
 		this.createAdmin();
 	}
@@ -50,6 +61,7 @@ class DatabaseInit {
 	async initDb() {
 		await this.query(this.queryUsers);
 		await this.query(this.queryTrips);
+		await this.query(this.queryBookings);
 	}
 
 	async createAdmin() {

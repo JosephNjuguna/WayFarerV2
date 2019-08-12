@@ -21,7 +21,8 @@ const userToken = Token.generateToken(3, user.email, user.firstname, user.lastna
 
 describe('/TRIPS AND BOOKINGS', () => {
 	after('after all test', (done) => {
-		Db.query('DELETE FROM trips');
+		Db.query('DELETE FROM trips, bookings');
+		Db.query('DROP TABLE IF EXISTS trips, bookings');
 		done();
 	});
 
@@ -420,6 +421,51 @@ describe('/TRIPS AND BOOKINGS', () => {
 			});
 	});
 
+	it('should test that tripId input is empty', (done) => {
+		chai.request(app)
+			.post('/api/v1/bookings')
+			.set('authorization', `Bearer ${userToken}`)
+			.send({
+				tripId: '',
+				seatNumber: 1,
+			})
+			.end((err, res) => {
+				res.should.have.status(400);
+				if (err) return done();
+				done();
+			});
+	});
+
+	it('should test that a seatNumber input is empty', (done) => {
+		chai.request(app)
+			.post('/api/v1/bookings')
+			.set('authorization', `Bearer ${userToken}`)
+			.send({
+				tripId: 1,
+				seatNumber: '',
+			})
+			.end((err, res) => {
+				res.should.have.status(400);
+				if (err) return done();
+				done();
+			});
+	});
+
+	it('should test that invalid(string) trip id', (done) => {
+		chai.request(app)
+			.post('/api/v1/bookings')
+			.set('authorization', `Bearer ${userToken}`)
+			.send({
+				tripId: 1,
+				seatNumber: '',
+			})
+			.end((err, res) => {
+				res.should.have.status(400);
+				if (err) return done();
+				done();
+			});
+	});
+
 	it('should successfully show a trip is not found', (done) => {
 		chai.request(app)
 			.post('/api/v1/bookings')
@@ -465,59 +511,7 @@ describe('/TRIPS AND BOOKINGS', () => {
 			});
 	});
 
-	it('should successfully show admin no bookings record found on Wayfarer', (done) => {
-		chai.request(app)
-			.get('/api/v1/bookings')
-			.set('authorization', `Bearer ${adminToken}`)
-			.end((err, res) => {
-				res.should.have.status(404);
-				if (err) return done();
-				done();
-			});
-	});
-
-	it('should successfully show user no records of his/her bookings', (done) => {
-		chai.request(app)
-			.get('/api/v1/userbookings')
-			.set('authorization', `Bearer ${userToken}`)
-			.end((err, res) => {
-				res.should.have.status(404);
-				if (err) return done();
-				done();
-			});
-	});
-
-	it('should test that tripId input is empty', (done) => {
-		chai.request(app)
-			.post('/api/v1/bookings')
-			.set('authorization', `Bearer ${userToken}`)
-			.send({
-				tripId: '',
-				seatNumber: 1,
-			})
-			.end((err, res) => {
-				res.should.have.status(400);
-				if (err) return done();
-				done();
-			});
-	});
-
-	it('should test that a seatNumber input is empty', (done) => {
-		chai.request(app)
-			.post('/api/v1/bookings')
-			.set('authorization', `Bearer ${userToken}`)
-			.send({
-				tripId: 1,
-				seatNumber: '',
-			})
-			.end((err, res) => {
-				res.should.have.status(400);
-				if (err) return done();
-				done();
-			});
-	});
-
-	it('should test a valid tripid', (done) => {
+	it('should test an invalid tripid input', (done) => {
 		chai.request(app)
 			.post('/api/v1/bookings')
 			.set('authorization', `Bearer ${userToken}`)
@@ -532,7 +526,7 @@ describe('/TRIPS AND BOOKINGS', () => {
 			});
 	});
 
-	it('should test a valid seatNumber', (done) => {
+	it('should test an invalid seatNumber input', (done) => {
 		chai.request(app)
 			.post('/api/v1/bookings')
 			.set('authorization', `Bearer ${userToken}`)
@@ -570,6 +564,17 @@ describe('/TRIPS AND BOOKINGS', () => {
 				tripId: 1,
 				seatNumber: 1,
 			})
+			.end((err, res) => {
+				res.should.have.status(404);
+				if (err) return done();
+				done();
+			});
+	});
+
+	it('should successfully show user no records of his/her bookings', (done) => {
+		chai.request(app)
+			.get('/api/v1/userbookings')
+			.set('authorization', `Bearer ${adminToken}`)
 			.end((err, res) => {
 				res.should.have.status(404);
 				if (err) return done();
