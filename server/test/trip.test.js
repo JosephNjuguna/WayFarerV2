@@ -476,18 +476,7 @@ describe('/TRIPS AND BOOKINGS', () => {
 			});
 	});
 
-	it('should successfully show user no trip id record found for his/her booking', (done) => {
-		chai.request(app)
-			.delete('/api/v2/bookings/1000000')
-			.set('authorization', `Bearer ${userToken}`)
-			.end((err, res) => {
-				res.should.have.status(404);
-				if (err) return done();
-				done();
-			});
-	});
-
-	it('should successfully show invalid booking id', (done) => {
+	it('should successfully show invalid booking id while deleting booking', (done) => {
 		chai.request(app)
 			.delete('/api/v2/bookings/one')
 			.set('authorization', `Bearer ${userToken}`)
@@ -570,7 +559,7 @@ describe('/TRIPS AND BOOKINGS', () => {
 			.post('/api/v2/bookings')
 			.set('authorization', `Bearer ${userToken}`)
 			.send({
-				tripId: 1,
+				tripId: 2,
 				seatNumber: 1,
 			})
 			.end((err, res) => {

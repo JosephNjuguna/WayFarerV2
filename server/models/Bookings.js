@@ -70,18 +70,15 @@ class Bookings {
 	}
 
 	async deleteBooking() {
-		const bookingId = parseInt(this.payload.bookId);
-		const booking = await db.find(o => o.bookingId === bookingId);
-		if (booking) {
-			if (booking.email === this.payload.email) {
-				const user = await db.splice(booking.bookingId - 1, 1);
-				return true;
-			}
+		const id = parseInt(this.payload.bookId);
+		const sql2 = `DELETE FROM bookings WHERE tripid ='${id}' AND email = '${this.payload.email}'`;
+		const { rows } = await Db.query(sql2);
+		if (!rows) {
 			this.result = { status: 401, message: 'You are not allowed to delete this booking.' };
 			return false;
 		}
-		this.result = { status: 404, message: `Booking Id : ${bookingId} not found` };
-		return false;
+		this.result = { status: 200, message: 'You have successfully deletes this booking.' };
+		return true;
 	}
 }
 

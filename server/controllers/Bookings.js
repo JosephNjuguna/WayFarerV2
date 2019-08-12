@@ -66,6 +66,7 @@ class Bookings {
 			}
 			return reqResponses.handleSuccess(200, 'success', `${req.userData.firstname}, you have successfully canceled your booking.`, res);
 		} catch (error) {
+			console.log(error);
 			return reqResponses.internalError(res);
 		}
 	}
