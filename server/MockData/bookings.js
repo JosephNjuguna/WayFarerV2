@@ -1,61 +1,36 @@
-const bookings = [
-	{
-		bookingId: 1,
+const bookings = {
+	booking1: {
+		tripId: '',
+		seatNumber: 1,
+	},
+	booking2: {
 		tripId: 1,
-		userId: 1,
-		busLicensenumber: 'RAD 123',
-		tripdate: '2/2/2019',
-		firstname: 'Dan',
-		lastname: 'Mace',
-		email: 'mace@mail.com',
-		seatNumber: 10,
+		seatNumber: '',
 	},
-	{
-		bookingId: 2,
+	booking3: {
+		tripId: 'onehundred',
+		seatNumber: 1,
+	},
+	booking4: {
 		tripId: 1,
-		userId: 2,
-		busLicensenumber: 'RAD 123',
-		tripdate: '2/2/2019',
-		firstname: 'Jose',
-		lastname: 'njuguna',
-		email: 'joe@mail.com',
-		seatNumber: 14,
+		seatNumber: 'two',
 	},
-	{
-		bookingId: 3,
-		tripId: 2,
-		userId: 3,
-		busLicensenumber: 'RAD 123',
-		tripdate: '2/2/2019',
-		firstname: 'Kyle',
-		lastname: 'J',
-		email: 'kj@mail.com',
-		seatNumber: 6,
+	booking5: {
+		tripId: 1000,
+		seatNumber: 20,
 	},
-	{
-		bookingId: 4,
-		tripId: 2,
-		userId: 4,
-		busLicensenumber: 'RAD 123',
-		tripdate: '2/2/2019',
-		firstname: 'Alan',
-		lastname: 'meh',
-		email: 'alan@mail.com',
-		seatNumber: 4,
+	booking6: {
+		tripId: 1,
+		seatNumber: 2000,
 	},
-	{
-		bookingId: 5,
-		tripId: 2,
-		userId: 1,
-		busLicensenumber: 'RAD 123',
-		tripdate: '31/1/2019',
-		firstname: 'main',
-		lastname: 'admin',
-		email: 'admin123@gmail.com',
-		seatNumber: 4,
+	booking7: {
+		tripId: 3,
+		seatNumber: 1,
 	},
-
-
-];
+	booking8: {
+		tripId: 1,
+		seatNumber: 1,
+	},
+};
 
 export default bookings;

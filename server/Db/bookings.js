@@ -7,7 +7,7 @@ const bookings = [
 		tripdate: '2/2/2019',
 		firstname: 'test',
 		lastname: 'test',
-		email: 'test1@mail.com',
+		email: 'josephnjuguna482@gmail.com',
 		seatNumber: 10,
 	},
 	{
@@ -18,8 +18,8 @@ const bookings = [
 		tripdate: '2/2/2019',
 		firstname: 'Jose',
 		lastname: 'njuguna',
-		email: 'joe@mail.com',
-		seatNumber: 14,
+		email: 'josephnjuguna482@gmail.com',
+		seatNumber: 6,
 	},
 ];
 

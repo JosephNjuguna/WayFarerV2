@@ -5,19 +5,15 @@ import chaiHttp from 'chai-http';
 import app from '../../app';
 import Token from '../helpers/Jwt';
 import Db from '../Db/Db';
+import tripMockdata from '../MockData/trips';
+import bookingData from '../MockData/bookings';
+import userMockdata from '../MockData/users';
 
 chai.should();
 chai.use(chaiHttp);
 
-const user = {
-	id: 2,
-	firstname: 'test',
-	lastname: 'test',
-	email: 'test1@mail.com',
-	isAdmin: 'false',
-};
 const adminToken = Token.generateToken(1, 'admin@wayfarer.com', 'admin', 'admin', 'true');
-const userToken = Token.generateToken(3, user.email, user.firstname, user.lastname, user.isAdmin);
+const userToken = Token.generateToken(2, userMockdata.user.email, userMockdata.user.firstname, userMockdata.user.lastname, userMockdata.user.password, userMockdata.user.isAdmin);
 
 describe('/TRIPS AND BOOKINGS', () => {
 	after('after all test', (done) => {
@@ -30,14 +26,7 @@ describe('/TRIPS AND BOOKINGS', () => {
 		chai.request(app)
 			.post('/api/v1/trips')
 			.set('authorization', ``)
-			.send({
-				seatingCapacity: 14,
-				busLicensenumber: 'RAD 129',
-				origin: 'KIGALI',
-				destination: 'NAIROBI',
-				tripDate: '1/7/2019',
-				fare: 3500,
-			})
+			.send(tripMockdata.trip1)
 			.end((err, res) => {
 				res.should.have.status(400);
 				if (err) return done();
@@ -49,14 +38,7 @@ describe('/TRIPS AND BOOKINGS', () => {
 		chai.request(app)
 			.post('/api/v1/trips')
 			.set('authorization', `Bearer ${userToken}`)
-			.send({
-				seatingCapacity: 14,
-				busLicensenumber: 'RAD 129',
-				origin: 'KIGALI',
-				destination: 'NAIROBI',
-				tripDate: '1/7/2019',
-				fare: 3500,
-			})
+			.send(tripMockdata.trip1)
 			.end((err, res) => {
 				res.should.have.status(403);
 				if (err) return done();
@@ -64,11 +46,11 @@ describe('/TRIPS AND BOOKINGS', () => {
 			});
 	});
 
-	it('should show that all seats are required', (done) => {
+	it('should show that all inputs are required', (done) => {
 		chai.request(app)
 			.post('/api/v1/trips')
 			.set('authorization', `Bearer ${adminToken}`)
-			.send({})
+			.send()
 			.end((err, res) => {
 				res.should.have.status(400);
 				if (err) return done();
@@ -80,14 +62,7 @@ describe('/TRIPS AND BOOKINGS', () => {
 		chai.request(app)
 			.post('/api/v1/trips')
 			.set('authorization', `Bearer ${adminToken}`)
-			.send({
-				seatingCapacity: 'fkfjkjfd',
-				busLicensenumber: 'RAD 129',
-				origin: 'KIGALI',
-				destination: 'NAIROBI',
-				tripDate: '01/07/2019',
-				fare: '3500',
-			})
+			.send(tripMockdata.trip2)
 			.end((err, res) => {
 				res.should.have.status(400);
 				if (err) return done();
@@ -95,18 +70,11 @@ describe('/TRIPS AND BOOKINGS', () => {
 			});
 	});
 
-	it('should show that seating capacity is invalid', (done) => {
+	it('should show that date is invalid', (done) => {
 		chai.request(app)
 			.post('/api/v1/trips')
 			.set('authorization', `Bearer ${adminToken}`)
-			.send({
-				seatingCapacity: '12',
-				busLicensenumber: 'RAD129',
-				origin: 'KIGALI',
-				destination: 'NAIROBI',
-				tripDate: '01/07/2019',
-				fare: '3500',
-			})
+			.send(tripMockdata.trip3)
 			.end((err, res) => {
 				res.should.have.status(400);
 				if (err) return done();
@@ -118,14 +86,7 @@ describe('/TRIPS AND BOOKINGS', () => {
 		chai.request(app)
 			.post('/api/v1/trips')
 			.set('authorization', `Bearer ${adminToken}`)
-			.send({
-				seatingCapacity: 'fkfjkjfd',
-				busLicensenumber: 'RAD 129',
-				origin: '121331edasdce',
-				destination: 'NAIROBI',
-				tripDate: '01/07/2019',
-				fare: '3500',
-			})
+			.send(tripMockdata.trip4)
 			.end((err, res) => {
 				res.should.have.status(400);
 				if (err) return done();
@@ -137,33 +98,7 @@ describe('/TRIPS AND BOOKINGS', () => {
 		chai.request(app)
 			.post('/api/v1/trips')
 			.set('authorization', `Bearer ${adminToken}`)
-			.send({
-				seatingCapacity: 'fkfjkjfd',
-				busLicensenumber: 'RAD 129',
-				origin: 'Kigali',
-				destination: '121331edasdce',
-				tripDate: '01/07/2019',
-				fare: '3500',
-			})
-			.end((err, res) => {
-				res.should.have.status(400);
-				if (err) return done();
-				done();
-			});
-	});
-
-	it('should show that the date is invalid or its a past date', (done) => {
-		chai.request(app)
-			.post('/api/v1/trips')
-			.set('authorization', `Bearer ${adminToken}`)
-			.send({
-				seatingCapacity: '14',
-				busLicensenumber: 'RAD 129',
-				origin: 'KIGALI',
-				destination: 'NAIROBI',
-				tripDate: '01/07/2019',
-				fare: '3500',
-			})
+			.send(tripMockdata.trip5)
 			.end((err, res) => {
 				res.should.have.status(400);
 				if (err) return done();
@@ -175,14 +110,7 @@ describe('/TRIPS AND BOOKINGS', () => {
 		chai.request(app)
 			.post('/api/v1/trips')
 			.set('authorization', `Bearer ${adminToken}`)
-			.send({
-				seatingCapacity: '14',
-				busLicensenumber: 'RAD 129',
-				origin: 'KIGALI',
-				destination: 'NAIROBI',
-				tripDate: '01/07/2019',
-				fare: 'dkjknmekrkj',
-			})
+			.send(tripMockdata.trip6)
 			.end((err, res) => {
 				res.should.have.status(400);
 				if (err) return done();
@@ -194,14 +122,7 @@ describe('/TRIPS AND BOOKINGS', () => {
 		chai.request(app)
 			.post('/api/v1/trips')
 			.set('authorization', `Bearer ${adminToken}`)
-			.send({
-				seatingCapacity: '14',
-				busLicensenumber: 'RAD 129',
-				origin: 'KIGALI',
-				destination: 'NAIROBI',
-				tripDate: '31/08/2019',
-				fare: '3500',
-			})
+			.send(tripMockdata.trip1)
 			.end((err, res) => {
 				res.should.have.status(201);
 				if (err) return done();
@@ -213,14 +134,7 @@ describe('/TRIPS AND BOOKINGS', () => {
 		chai.request(app)
 			.post('/api/v1/trips')
 			.set('authorization', `Bearer ${adminToken}`)
-			.send({
-				seatingCapacity: '14',
-				busLicensenumber: 'RAD 129',
-				origin: 'KIGALI',
-				destination: 'NAIROBI',
-				tripDate: '31/08/2019',
-				fare: '3500',
-			})
+			.send(tripMockdata.trip1)
 			.end((err, res) => {
 				res.should.have.status(409);
 				if (err) return done();
@@ -425,10 +339,7 @@ describe('/TRIPS AND BOOKINGS', () => {
 		chai.request(app)
 			.post('/api/v1/bookings')
 			.set('authorization', `Bearer ${userToken}`)
-			.send({
-				tripId: '',
-				seatNumber: 1,
-			})
+			.send(bookingData.booking1)
 			.end((err, res) => {
 				res.should.have.status(400);
 				if (err) return done();
@@ -440,10 +351,7 @@ describe('/TRIPS AND BOOKINGS', () => {
 		chai.request(app)
 			.post('/api/v1/bookings')
 			.set('authorization', `Bearer ${userToken}`)
-			.send({
-				tripId: 1,
-				seatNumber: '',
-			})
+			.send(bookingData.booking1)
 			.end((err, res) => {
 				res.should.have.status(400);
 				if (err) return done();
@@ -455,10 +363,19 @@ describe('/TRIPS AND BOOKINGS', () => {
 		chai.request(app)
 			.post('/api/v1/bookings')
 			.set('authorization', `Bearer ${userToken}`)
-			.send({
-				tripId: 1,
-				seatNumber: '',
-			})
+			.send(bookingData.booking3)
+			.end((err, res) => {
+				res.should.have.status(400);
+				if (err) return done();
+				done();
+			});
+	});
+
+	it('should test that invalid(string) seatnumber', (done) => {
+		chai.request(app)
+			.post('/api/v1/bookings')
+			.set('authorization', `Bearer ${userToken}`)
+			.send(bookingData.booking4)
 			.end((err, res) => {
 				res.should.have.status(400);
 				if (err) return done();
@@ -470,10 +387,7 @@ describe('/TRIPS AND BOOKINGS', () => {
 		chai.request(app)
 			.post('/api/v1/bookings')
 			.set('authorization', `Bearer ${userToken}`)
-			.send({
-				tripId: 100,
-				seatNumber: 1,
-			})
+			.send(bookingData.booking5)
 			.end((err, res) => {
 				res.should.have.status(404);
 				if (err) return done();
@@ -485,10 +399,7 @@ describe('/TRIPS AND BOOKINGS', () => {
 		chai.request(app)
 			.post('/api/v1/bookings')
 			.set('authorization', `Bearer ${userToken}`)
-			.send({
-				tripId: 1,
-				seatNumber: 20,
-			})
+			.send(bookingData.booking6)
 			.end((err, res) => {
 				res.should.have.status(400);
 				if (err) return done();
@@ -500,42 +411,9 @@ describe('/TRIPS AND BOOKINGS', () => {
 		chai.request(app)
 			.post('/api/v1/bookings')
 			.set('authorization', `Bearer ${userToken}`)
-			.send({
-				tripId: 3,
-				seatNumber: 1,
-			})
+			.send(bookingData.booking7)
 			.end((err, res) => {
 				res.should.have.status(404);
-				if (err) return done();
-				done();
-			});
-	});
-
-	it('should test an invalid tripid input', (done) => {
-		chai.request(app)
-			.post('/api/v1/bookings')
-			.set('authorization', `Bearer ${userToken}`)
-			.send({
-				tripId: 1.9,
-				seatNumber: 1,
-			})
-			.end((err, res) => {
-				res.should.have.status(400);
-				if (err) return done();
-				done();
-			});
-	});
-
-	it('should test an invalid seatNumber input', (done) => {
-		chai.request(app)
-			.post('/api/v1/bookings')
-			.set('authorization', `Bearer ${userToken}`)
-			.send({
-				tripId: 1,
-				seatNumber: '13lkjv',
-			})
-			.end((err, res) => {
-				res.should.have.status(400);
 				if (err) return done();
 				done();
 			});
@@ -545,10 +423,7 @@ describe('/TRIPS AND BOOKINGS', () => {
 		chai.request(app)
 			.post('/api/v1/bookings')
 			.set('authorization', `Bearer ${userToken}`)
-			.send({
-				tripId: 1,
-				seatNumber: 1,
-			})
+			.send(bookingData.booking8)
 			.end((err, res) => {
 				res.should.have.status(201);
 				if (err) return done();
@@ -560,10 +435,7 @@ describe('/TRIPS AND BOOKINGS', () => {
 		chai.request(app)
 			.post('/api/v1/bookings')
 			.set('authorization', `Bearer ${userToken}`)
-			.send({
-				tripId: 1,
-				seatNumber: 1,
-			})
+			.send(bookingData.booking8)
 			.end((err, res) => {
 				res.should.have.status(404);
 				if (err) return done();
@@ -615,7 +487,7 @@ describe('/TRIPS AND BOOKINGS', () => {
 			});
 	});
 
-	it('should successfully invalid booking id', (done) => {
+	it('should successfully show invalid booking id', (done) => {
 		chai.request(app)
 			.delete('/api/v1/bookings/one')
 			.set('authorization', `Bearer ${userToken}`)

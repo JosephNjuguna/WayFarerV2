@@ -1,34 +1,52 @@
-const trips = [
-	{
-		id: 1,
-		seatingCapacity: 14,
+const trips = {
+	trip1: {
 		busLicensenumber: 'RAD 123',
+		seatingCapacity: '14',
 		origin: 'KIGALI',
 		destination: 'KAMPALA',
-		tripdate: '17/08/2019',
-		fare: 2000,
-		status: 'active',
+		tripDate: '22/08/2019',
+		fare: '2000',
 	},
-	{
-		id: 2,
-		seatingCapacity: 14,
-		busLicensenumber: 'RAD 456',
-		origin: 'KAMPALA',
-		destination: 'KIGALI',
-		tripdate: '02/02/2019',
-		fare: 2000,
-		status: 'active',
+	trip2: {
+		seatingCapacity: 'fkfjkjfd',
+		busLicensenumber: 'RAD 129',
+		origin: 'KIGALI',
+		destination: 'NAIROBI',
+		tripDate: '01/07/2019',
+		fare: '3500',
 	},
-	{
-		id: 3,
-		seatingCapacity: 14,
-		busLicensenumber: 'RAD 789',
-		origin: 'NAIROBI',
-		destination: 'KIGALI',
-		tripdate: '04/08/2019',
-		fare: 3000,
-		status: 'canceled',
+	trip3: {
+		seatingCapacity: '12',
+		busLicensenumber: 'RAD 129',
+		origin: 'KIGALI',
+		destination: 'NAIROBI',
+		tripDate: '01/07/2019',
+		fare: '3500',
 	},
-];
+	trip4: {
+		seatingCapacity: 'fkfjkjfd',
+		busLicensenumber: 'RAD 129',
+		origin: '121331edasdce',
+		destination: 'NAIROBI',
+		tripDate: '01/07/2019',
+		fare: '3500',
+	},
+	trip5: {
+		seatingCapacity: 'fkfjkjfd',
+		busLicensenumber: 'RAD 129',
+		origin: 'Kigali',
+		destination: '121331edasdce',
+		tripDate: '01/07/2019',
+		fare: '3500',
+	},
+	trip6: {
+		seatingCapacity: '14',
+		busLicensenumber: 'RAD 129',
+		origin: 'KIGALI',
+		destination: 'NAIROBI',
+		tripDate: '21/08/2019',
+		fare: 'dkjknmekrkj',
+	},
+};
 
 export default trips;
