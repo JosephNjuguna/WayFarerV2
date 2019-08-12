@@ -1,26 +1,56 @@
-import dotenv from 'dotenv';
-import EncryptData from '../helpers/Encrypt';
-
-const hashedPassword = EncryptData.generateHash(process.env.password);
-
-dotenv.config();
-const users = [
-	{
-		id: 1,
-		firstname: 'main',
+const users = {
+	user1: {
+		firstname: '',
 		lastname: 'admin',
-		email: 'admin123@gmail.com',
-		password: hashedPassword,
+		email: 'testmail@gmail.com',
+		password: 'qwerQ@qwerre123',
 		isAdmin: true,
 	},
-	{
-		id: 2,
+	user2: {
+		firstname: 'main',
+		lastname: '',
+		email: 'testmail@gmail.com',
+		password: 'qwerQ@qwerre123',
+		isAdmin: true,
+	},
+	user3: {
+		firstname: 'main',
+		lastname: 'admin',
+		email: '',
+		password: 'qwerQ@qwerre123',
+		isAdmin: true,
+	},
+	user4: {
+		firstname: 'main',
+		lastname: 'admin',
+		email: 'testmail@gmail.com',
+		password: '',
+		isAdmin: true,
+	},
+	user5: {
+		email: 'josephnjuguna482@gmail.com',
+		password: 'qwerQ@qwerre1VFSdcSvcVS3',
+	},
+	user6: {
+		firstname: 'Joseph',
+		lastname: 'Njuguna',
+		email: 'test@gmail.com',
+		password: 'qwerQ@qwerre123',
+	},
+	user: {
 		firstname: 'Joseph',
 		lastname: 'Njuguna',
 		email: 'josephnjuguna482@gmail.com',
-		password: hashedPassword,
-		isAdmin: false,
+		password: 'qwerQ@qwerre123',
 	},
-];
+	userlogin: {
+		email: 'test@gmail.com',
+		password: 'qwerQ@qwerre123',
+	},
+	nonuser: {
+		email: 'nonuser@gmail.com',
+		password: 'qwerQ@qwerre123',
+	},
+};
 
 export default users;

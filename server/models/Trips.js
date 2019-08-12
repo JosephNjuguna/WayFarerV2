@@ -20,7 +20,7 @@ class Trips {
 	}
 
 	async createTrip() {
-		const values = [this.payload.busLicensenumber, this.payload.seatingCapacity, this.payload.origin, this.payload.destination, this.payload.tripDate, this.payload.fare, 'active'];
+		const values = [this.payload.busLicensenumber, parseInt(this.payload.seatingCapacity), this.payload.origin, this.payload.destination, this.payload.tripDate, parseInt(this.payload.fare), 'active'];
 		const sql = 'INSERT INTO trips (buslicensenumber, seatingcapacity, origin, destination, tripdate, fare, status ) VALUES($1, $2, $3, $4, $5, $6, $7) returning *';
 		const { rows } = await Db.query(sql, values);
 		// eslint-disable-next-line prefer-destructuring

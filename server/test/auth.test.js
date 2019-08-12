@@ -1,29 +1,17 @@
 import chai from 'chai';
 import chaiHttp from 'chai-http';
-import dotenv from 'dotenv';
 import app from '../../app';
 import Db from '../Db/Db';
+import userMockdata from '../MockData/users';
 
-import EncryptData from '../helpers/Encrypt';
-
-dotenv.config();
 chai.should();
 chai.use(chaiHttp);
-
-const hashedPassword = EncryptData.generateHash(process.env.password);
-
-const user = {
-	firstname: 'test',
-	lastname: 'test',
-	email: 'test2@mail.com',
-	password: hashedPassword,
-	isAdmin: false,
-};
 
 describe('/AUTHENTICATION', () => {
 	before('add user', async (done) => {
 		Db.query('INSERT INTO users (firstname, lastname, email, password, isAdmin) values($1, $2, $3, $4, $5)',
-			[user.firstname, user.lastname, user.email, user.password, user.isAdmin]);
+			// eslint-disable-next-line max-len
+			[userMockdata.user.firstname, userMockdata.user.lastname, userMockdata.user.email, userMockdata.user.password, 'false']);
 		done();
 	});
 
@@ -35,13 +23,8 @@ describe('/AUTHENTICATION', () => {
 	describe('/POST signup', () => {
 		it('should check user has firstname', (done) => {
 			chai.request(app)
-				.post('/api/v1/signup')
-				.send({
-					firstname: '',
-					lastname: 'testlastname',
-					email: 'test1@mail.com',
-					password: 'qwerQ@q123',
-				})
+				.post('/api/v2/signup')
+				.send(userMockdata.user1)
 				.end((err, res) => {
 					res.should.have.status(400);
 					if (err) return done();
@@ -51,13 +34,8 @@ describe('/AUTHENTICATION', () => {
 
 		it('should check user has lastname', (done) => {
 			chai.request(app)
-				.post('/api/v1/signup')
-				.send({
-					firstname: 'testfirstname',
-					lastname: '',
-					email: 'test1@mail.com',
-					password: 'qwerQ@qwerre123',
-				})
+				.post('/api/v2/signup')
+				.send(userMockdata.user2)
 				.end((err, res) => {
 					res.should.have.status(400);
 					if (err) return done();
@@ -67,13 +45,8 @@ describe('/AUTHENTICATION', () => {
 
 		it('should check user has email', (done) => {
 			chai.request(app)
-				.post('/api/v1/signup')
-				.send({
-					firstname: 'testfirstname',
-					lastname: 'testlastname',
-					email: '',
-					password: 'qwerQ@qwerre123',
-				})
+				.post('/api/v2/signup')
+				.send(userMockdata.user3)
 				.end((err, res) => {
 					res.should.have.status(400);
 					if (err) return done();
@@ -83,13 +56,8 @@ describe('/AUTHENTICATION', () => {
 
 		it('should check user has password', (done) => {
 			chai.request(app)
-				.post('/api/v1/signup')
-				.send({
-					firstname: 'testfirstname',
-					lastname: 'testlastname',
-					email: 'test1@mail.com',
-					password: '',
-				})
+				.post('/api/v2/signup')
+				.send(userMockdata.user4)
 				.end((err, res) => {
 					res.should.have.status(400);
 					if (err) return done();
@@ -99,13 +67,8 @@ describe('/AUTHENTICATION', () => {
 
 		it('should successfully sign up user', (done) => {
 			chai.request(app)
-				.post('/api/v1/signup')
-				.send({
-					firstname: 'testfirstname',
-					lastname: 'testlastname',
-					email: 'test1@mail.com',
-					password: 'qwerQ@qwerre123',
-				})
+				.post('/api/v2/signup')
+				.send(userMockdata.user6)
 				.end((err, res) => {
 					res.should.have.status(201);
 					if (err) return done();
@@ -115,13 +78,8 @@ describe('/AUTHENTICATION', () => {
 
 		it('should check user already exist', (done) => {
 			chai.request(app)
-				.post('/api/v1/signup')
-				.send({
-					firstname: 'Joseph',
-					lastname: 'Njuguna',
-					email: 'test1@mail.com',
-					password: 'qwerQ@qwerre123',
-				})
+				.post('/api/v2/signup')
+				.send(userMockdata.user)
 				.end((err, res) => {
 					res.should.have.status(409);
 					if (err) return done();
@@ -133,11 +91,8 @@ describe('/AUTHENTICATION', () => {
 	describe('/POST login', () => {
 		it('should have user email', (done) => {
 			chai.request(app)
-				.post('/api/v1/login')
-				.send({
-					email: '',
-					password: 'qwerQ@qwerre123',
-				})
+				.post('/api/v2/login')
+				.send(userMockdata.user3)
 				.end((err, res) => {
 					res.should.have.status(400);
 					if (err) return done();
@@ -147,11 +102,8 @@ describe('/AUTHENTICATION', () => {
 
 		it('should have user password ', (done) => {
 			chai.request(app)
-				.post('/api/v1/login')
-				.send({
-					email: 'test1@mail.com',
-					password: '',
-				})
+				.post('/api/v2/login')
+				.send(userMockdata.user4)
 				.end((err, res) => {
 					res.should.have.status(400);
 					if (err) return done();
@@ -161,11 +113,9 @@ describe('/AUTHENTICATION', () => {
 
 		it('should not log in non-existing email', (done) => {
 			chai.request(app)
-				.post('/api/v1/login')
-				.send({
-					email: 'test1121333@mail.com',
-					password: 'qwerQ@qwerre123',
-				}).end((err, res) => {
+				.post('/api/v2/login')
+				.send(userMockdata.nonuser)
+				.end((err, res) => {
 					res.should.have.status(404);
 					if (err) return done();
 					done();
@@ -174,11 +124,8 @@ describe('/AUTHENTICATION', () => {
 
 		it('should successfully log in user', (done) => {
 			chai.request(app)
-				.post('/api/v1/login')
-				.send({
-					email: 'test1@mail.com',
-					password: 'qwerQ@qwerre123',
-				}).end((err, res) => {
+				.post('/api/v2/login')
+				.send(userMockdata.userlogin).end((err, res) => {
 					res.should.have.status(200);
 					if (err) return done();
 					done();
@@ -187,11 +134,8 @@ describe('/AUTHENTICATION', () => {
 
 		it('should check user password mismatch', (done) => {
 			chai.request(app)
-				.post('/api/v1/login')
-				.send({
-					email: 'test1@mail.com',
-					password: 'qwerQ@qwerre1VFSdcSvcVS3',
-				}).end((err, res) => {
+				.post('/api/v2/login')
+				.send(userMockdata.user5).end((err, res) => {
 					res.should.have.status(401);
 					if (err) return done();
 					done();

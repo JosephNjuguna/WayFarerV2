@@ -20,7 +20,7 @@ class Bookings {
 				tripId, email, firstname, lastname, id, seatNumber,
 			});
 			if (!await bookingSeat.bookaSeat()) {
-				return reqResponses.notFound(bookingSeat.result, res);
+				return reqResponses.handleError(bookingSeat.result.status, bookingSeat.result.message, res);
 			}
 			return reqResponses.handleSuccess(201, 'Booked successfully', bookingSeat.result, res);
 		} catch (error) {
