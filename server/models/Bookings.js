@@ -71,7 +71,7 @@ class Bookings {
 
 	async deleteBooking() {
 		const id = parseInt(this.payload.bookId);
-		const sql2 = `DELETE FROM bookings WHERE tripid ='${id}' AND email = '${this.payload.email}'`;
+		const sql2 = `DELETE FROM bookings WHERE id ='${id}' AND email = '${this.payload.email}'`;
 		const { rows } = await Db.query(sql2);
 		if (!rows) {
 			this.result = { status: 401, message: 'You are not allowed to delete this booking.' };
