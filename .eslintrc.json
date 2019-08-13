@@ -29,6 +29,12 @@
         "no-unused-vars": [
         "error", { "vars": "all", "args": "after-used", "ignoreRestSiblings": false }
         ],
-        "eol-last": ["error", "always"]
+        "eol-last": ["error", "always"],
+        "prefer-destructuring": ["error", {
+            "AssignmentExpression": {
+              "array": false,
+              "object": false
+            }
+          }]
     }
 }

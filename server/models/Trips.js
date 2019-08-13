@@ -17,10 +17,9 @@ class Trips {
 	}
 
 	async createTrip() {
-		const values = [this.payload.busLicensenumber, parseInt(this.payload.seatingCapacity, 10), this.payload.origin, this.payload.destination, this.payload.tripDate, parseInt(this.payload.fare, ), 'active'];
+		const values = [this.payload.busLicensenumber, parseInt(this.payload.seatingCapacity, 10), this.payload.origin, this.payload.destination, this.payload.tripDate, parseInt(this.payload.fare, 10), 'active'];
 		const sql = 'INSERT INTO trips (buslicensenumber, seatingcapacity, origin, destination, tripdate, fare, status ) VALUES($1, $2, $3, $4, $5, $6, $7) returning *';
 		const { rows } = await Db.query(sql, values);
-		// eslint-disable-next-line prefer-destructuring
 		this.result = rows[0];
 		return true;
 	}
@@ -78,11 +77,13 @@ class Trips {
 
 	async viewSingleActivetrip() {
 		const id = parseInt(this.payload, 10);
-		const obj = db.find(o => o.id === id && o.status === 'active');
-		if (!obj) {
+		const status = 'active';
+		const sql = `SELECT * FROM trips WHERE id ='${id}' AND status = '${status}'`;
+		const { rows } = await Db.query(sql);
+		if (rows.length === 0) {
 			return false;
 		}
-		this.result = obj;
+		this.result = rows[0];
 		return this.result;
 	}
 

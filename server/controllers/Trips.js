@@ -69,14 +69,14 @@ class Trip {
 			if (!await singleTrip.viewSingletrip()) {
 				return reqResponses.handleError(404, 'Trip Id not found', res);
 			}
-			return reqResponses.handleSuccess(200, 'success', singleTrip, res);
+			return reqResponses.handleSuccess(200, 'success', singleTrip.result, res);
 		}
 		const tripId = req.params.id;
 		const singleTrip = new TripModel(tripId);
 		if (!await singleTrip.viewSingleActivetrip()) {
 			return reqResponses.handleError(404, 'Trip Id not found', res);
 		}
-		return reqResponses.handleSuccess(200, 'success', singleTrip, res);
+		return reqResponses.handleSuccess(200, 'success', singleTrip.result, res);
 	}
 
 	static async filterOrigin(req, res) {
