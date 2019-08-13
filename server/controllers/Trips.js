@@ -45,18 +45,18 @@ class Trip {
 		const token = req.headers.authorization.split(' ')[1];
 		const decoded = jwt.verify(token, process.env.JWT_KEY);
 		req.userData = decoded;
-		if (req.userData.isAdmin === true) {
+		if (req.userData.isadmin === 'true') {
 			const viewTrips = new TripModel();
 			if (!await viewTrips.viewAlltrips()) {
 				return reqResponses.handleError(404, 'No Trips record found', res);
 			}
-			return reqResponses.handleSuccess(200, 'success', viewTrips, res);
+			return reqResponses.handleSuccess(200, 'success', viewTrips.result, res);
 		}
 		const viewTrips = new TripModel();
 		if (!await viewTrips.viewActivetrips()) {
 			return reqResponses.handleError(404, 'No Trips record found', res);
 		}
-		return reqResponses.handleSuccess(200, 'success', viewTrips, res);
+		return reqResponses.handleSuccess(200, 'success', viewTrips.result, res);
 	}
 
 	static async viewSingletrip(req, res) {
