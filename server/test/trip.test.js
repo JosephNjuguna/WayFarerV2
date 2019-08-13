@@ -465,7 +465,7 @@ describe('/TRIPS AND BOOKINGS', () => {
 			});
 	});
 
-	it('should successfully show admin all bookings on Wayfarer', (done) => {
+	it('should successfully show admin all bookings', (done) => {
 		chai.request(app)
 			.get('/api/v2/bookings')
 			.set('authorization', `Bearer ${adminToken}`)

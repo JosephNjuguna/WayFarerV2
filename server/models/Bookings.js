@@ -62,10 +62,12 @@ class Bookings {
 	}
 
 	static async viewAllBooking() {
-		if (db.length === 0) {
+		const sql = 'SELECT *  FROM bookings';
+		const { rows } = await Db.query(sql);
+		if (rows.length === 0) {
 			return false;
 		}
-		this.result = db;
+		this.result = rows;
 		return this.result;
 	}
 
