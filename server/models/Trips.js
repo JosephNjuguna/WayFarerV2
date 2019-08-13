@@ -1,3 +1,4 @@
+/* eslint-disable no-shadow */
 /* eslint-disable max-len */
 /* eslint-disable no-else-return */
 /* eslint-disable radix */
@@ -29,29 +30,27 @@ class Trips {
 	}
 
 	async cancelTrip() {
-		const id = parseInt(this.payload.tripId);
-		const obj = db.find(o => o.id === id);
-		if (!obj) {
-			this.result = { status: 404, message: `Trip id record '${id}' not found` };
+		const tripId = parseInt(this.payload.tripId);
+		const findtrip = `SELECT *  FROM trips WHERE id = '${tripId}'`;
+		const { rows } = await Db.query(findtrip);
+		if (rows.length === 0) {
+			this.result = { status: 404, message: `Trip not found` };
 			return false;
 		}
-		if (obj.status === 'canceled') {
-			this.result = { status: 400, message: 'This trip is already canceled' };
+		if (rows[0].status === 'canceled') {
+			this.result = { status: 400, message: `This trip is already canceled` };
 			return false;
+		} else {
+			const sql = `UPDATE trips SET status ='${this.payload.tripStatus}'  WHERE id = '${tripId}' returning *;`;
+			const { rows } = await Db.query(sql);
+			if (rows.length === 0) {
+				this.result = { status: 404, message: `Trip not found` };
+				return false;
+			}
+			// eslint-disable-next-line prefer-destructuring
+			this.result = rows[0];
+			return this.result;
 		}
-		const tripCancel = {
-			id: obj.id,
-			seatingCapacity: obj.seatingCapacity,
-			busLicensenumber: obj.busLicensenumber,
-			origin: obj.origin,
-			destination: obj.destination,
-			tripDate: obj.tripDate,
-			fare: obj.fare,
-			status: this.payload.tripStatus || obj.status,
-		};
-		db.splice(obj.id - 1, 1, tripCancel);
-		this.result = tripCancel;
-		return true;
 	}
 
 	async viewAlltrips() {
