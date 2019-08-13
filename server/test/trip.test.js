@@ -476,23 +476,23 @@ describe('/TRIPS AND BOOKINGS', () => {
 			});
 	});
 
-	it('should successfully show user no trip id record found for his/her booking', (done) => {
-		chai.request(app)
-			.delete('/api/v2/bookings/1000000')
-			.set('authorization', `Bearer ${userToken}`)
-			.end((err, res) => {
-				res.should.have.status(404);
-				if (err) return done();
-				done();
-			});
-	});
-
 	it('should successfully show invalid booking id', (done) => {
 		chai.request(app)
 			.delete('/api/v2/bookings/one')
 			.set('authorization', `Bearer ${userToken}`)
 			.end((err, res) => {
 				res.should.have.status(400);
+				if (err) return done();
+				done();
+			});
+	});
+
+	it('should successfully show user no trip id record found for his/her booking', (done) => {
+		chai.request(app)
+			.delete('/api/v2/bookings/1000000')
+			.set('authorization', `Bearer ${userToken}`)
+			.end((err, res) => {
+				res.should.have.status(404);
 				if (err) return done();
 				done();
 			});
@@ -574,7 +574,7 @@ describe('/TRIPS AND BOOKINGS', () => {
 				seatNumber: 1,
 			})
 			.end((err, res) => {
-				res.should.have.status(404);
+				res.should.have.status(400);
 				if (err) return done();
 				done();
 			});
