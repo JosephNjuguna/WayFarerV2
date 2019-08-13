@@ -50,10 +50,12 @@ class Trips {
 	}
 
 	async viewAlltrips() {
-		if (db.length === 0) {
+		const sql = 'SELECT * FROM trips';
+		const { rows } = await Db.query(sql);
+		if (rows.length === 0) {
 			return false;
 		}
-		this.result = db;
+		this.result = rows;
 		return this.result;
 	}
 
