@@ -59,11 +59,13 @@ class Trips {
 	}
 
 	async viewActivetrips() {
-		const obj = db.find(o => o.status === 'active');
-		if (!obj) {
+		const status = 'active';
+		const sql = `SELECT * FROM trips WHERE status = '${status}'`;
+		const { rows } = await Db.query(sql);
+		if (rows.length === 0) {
 			return false;
 		}
-		this.result = obj;
+		this.result = rows;
 		return this.result;
 	}
 
