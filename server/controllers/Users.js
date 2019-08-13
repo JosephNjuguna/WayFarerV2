@@ -1,4 +1,3 @@
-/* eslint-disable max-len */
 import Usermodel from '../models/Users';
 import EncryptData from '../helpers/Encrypt';
 import reqResponses from '../helpers/Responses';

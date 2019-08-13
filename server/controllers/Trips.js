@@ -14,7 +14,6 @@ class Trip {
 				tripDate,
 				fare,
 			} = req.body;
-			// eslint-disable-next-line max-len
 			// eslint-disable-next-line new-cap
 			const addTrip = new TripModel({
 				seatingCapacity, busLicensenumber, origin, destination, tripDate, fare,
