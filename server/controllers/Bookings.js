@@ -64,7 +64,7 @@ class Bookings {
 				// eslint-disable-next-line max-len
 				return reqResponses.handleError(cancelBooking.result.status, cancelBooking.result.message, res);
 			}
-			return reqResponses.handleSuccess(200, 'success', `${req.userData.firstname}, you have successfully canceled your booking.`, res);
+			return reqResponses.handleSuccess(204, 'success', `${req.userData.firstname}, you have successfully canceled your booking.`, res);
 		} catch (error) {
 			return reqResponses.internalError(res);
 		}
