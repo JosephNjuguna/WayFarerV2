@@ -1,4 +1,3 @@
-/* eslint-disable max-len */
 /* eslint-disable new-cap */
 import chai from 'chai';
 import chaiHttp from 'chai-http';
