@@ -1,4 +1,3 @@
-/* eslint-disable max-len */
 import Db from '../Db/Db';
 
 class UsersModel {

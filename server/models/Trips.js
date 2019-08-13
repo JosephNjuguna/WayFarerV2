@@ -1,6 +1,3 @@
-/* eslint-disable max-len */
-/* eslint-disable no-else-return */
-/* eslint-disable radix */
 import db from '../Db/trips';
 import Db from '../Db/Db';
 
@@ -20,7 +17,7 @@ class Trips {
 	}
 
 	async createTrip() {
-		const values = [this.payload.busLicensenumber, parseInt(this.payload.seatingCapacity), this.payload.origin, this.payload.destination, this.payload.tripDate, parseInt(this.payload.fare), 'active'];
+		const values = [this.payload.busLicensenumber, parseInt(this.payload.seatingCapacity, 10), this.payload.origin, this.payload.destination, this.payload.tripDate, parseInt(this.payload.fare), 'active'];
 		const sql = 'INSERT INTO trips (buslicensenumber, seatingcapacity, origin, destination, tripdate, fare, status ) VALUES($1, $2, $3, $4, $5, $6, $7) returning *';
 		const { rows } = await Db.query(sql, values);
 		// eslint-disable-next-line prefer-destructuring
@@ -29,7 +26,7 @@ class Trips {
 	}
 
 	async cancelTrip() {
-		const id = parseInt(this.payload.tripId);
+		const id = parseInt(this.payload.tripId, 10);
 		const obj = db.find(o => o.id === id);
 		if (!obj) {
 			this.result = { status: 404, message: `Trip id record '${id}' not found` };
@@ -63,7 +60,6 @@ class Trips {
 	}
 
 	async viewActivetrips() {
-		// eslint-disable-next-line radix
 		const obj = db.find(o => o.status === 'active');
 		if (!obj) {
 			return false;
@@ -73,8 +69,7 @@ class Trips {
 	}
 
 	async viewSingletrip() {
-		// eslint-disable-next-line radix
-		const id = parseInt(this.payload);
+		const id = parseInt(this.payload, 10);
 		const obj = db.find(o => o.id === id);
 		if (!obj) {
 			return false;
@@ -84,8 +79,7 @@ class Trips {
 	}
 
 	async viewSingleActivetrip() {
-		// eslint-disable-next-line radix
-		const id = parseInt(this.payload);
+		const id = parseInt(this.payload, 10);
 		const obj = db.find(o => o.id === id && o.status === 'active');
 		if (!obj) {
 			return false;

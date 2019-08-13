@@ -15,7 +15,6 @@ class Bookings {
 			const {
 				email, firstname, lastname, id,
 			} = req.userData;
-			// eslint-disable-next-line max-len
 			const bookingSeat = new BookingModel({
 				tripId, email, firstname, lastname, id, seatNumber,
 			});
@@ -61,7 +60,6 @@ class Bookings {
 			const { email } = req.userData;
 			const cancelBooking = new BookingModel({ email, bookId });
 			if (!await cancelBooking.deleteBooking()) {
-				// eslint-disable-next-line max-len
 				return reqResponses.handleError(cancelBooking.result.status, cancelBooking.result.message, res);
 			}
 			return reqResponses.handleSuccess(204, 'success', `${req.userData.firstname}, you have successfully canceled your booking.`, res);

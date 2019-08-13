@@ -1,9 +1,4 @@
-/* eslint-disable no-shadow */
-/* eslint-disable no-else-return */
-/* eslint-disable no-unused-vars */
-/* eslint-disable radix */
 import db from '../Db/bookings';
-import tripDb from '../Db/trips';
 import date from '../helpers/Date';
 import Db from '../Db/Db';
 
@@ -14,14 +9,15 @@ class Bookings {
 	}
 
 	async bookaSeat() {
-		const tripInfo = parseInt(this.payload.tripId);
-		const seatNo = parseInt(this.payload.seatNumber);
+		const tripInfo = parseInt(this.payload.tripId, 10);
+		const seatNo = parseInt(this.payload.seatNumber, 10);
 		const obj = `SELECT *  FROM trips WHERE id = '${tripInfo}'`;
 		const { rows } = await Db.query(obj);
 		if (rows.length === 0) {
 			this.result = { status: 404, message: `Trip Id : ${tripInfo} is not available` };
 			return false;
-		} else if (rows[0].status === 'canceled') {
+		}
+		if (rows[0].status === 'canceled') {
 			this.result = { status: 400, message: `Cancelled. Trip Id : ${tripInfo} is cancelled and not available.` };
 			return false;
 		}
@@ -41,7 +37,6 @@ class Bookings {
 				this.result = { status: 404, message: `Seat number : '${seatNo}' already taken. choose another seat` };
 				return false;
 			} else {
-				// eslint-disable-next-line max-len
 				const values = [tripInfo, this.payload.id, trip[0].buslicensenumber, trip[0].tripdate, this.payload.firstname, this.payload.lastname, this.payload.email, seatNo];
 				const sql2 = 'INSERT INTO bookings (tripid, userid, buslicensenumber, tripdate, firstname, lastname, email, seatnumber ) VALUES($1, $2, $3, $4, $5, $6, $7, $8) returning *';
 				const { rows } = await Db.query(sql2, values);
@@ -70,7 +65,7 @@ class Bookings {
 	}
 
 	async deleteBooking() {
-		const id = parseInt(this.payload.bookId);
+		const id = parseInt(this.payload.bookId, 10);
 		const sql2 = `DELETE FROM bookings WHERE id ='${id}' AND email = '${this.payload.email}'`;
 		const { rows } = await Db.query(sql2);
 		if (!rows) {
