@@ -1,4 +1,3 @@
-/* eslint-disable max-len */
 /* eslint-disable new-cap */
 import chai from 'chai';
 import chaiHttp from 'chai-http';
@@ -503,7 +502,7 @@ describe('/TRIPS AND BOOKINGS', () => {
 			.delete('/api/v2/bookings/1')
 			.set('authorization', `Bearer ${userToken}`)
 			.end((err, res) => {
-				res.should.have.status(200);
+				res.should.have.status(204);
 				if (err) return done();
 				done();
 			});
@@ -570,11 +569,11 @@ describe('/TRIPS AND BOOKINGS', () => {
 			.post('/api/v2/bookings')
 			.set('authorization', `Bearer ${userToken}`)
 			.send({
-				tripId: 1,
+				tripId: 2,
 				seatNumber: 1,
 			})
 			.end((err, res) => {
-				res.should.have.status(400);
+				res.should.have.status(404);
 				if (err) return done();
 				done();
 			});
