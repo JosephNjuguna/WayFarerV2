@@ -47,12 +47,13 @@ class Bookings {
 	}
 
 	async userAllBooking() {
-		const obj = await db.filter(o => o.email === this.payload.email);
-		if (obj.length === 0) {
-			this.result = 'Sorry you have no booking record yet.';
+		const sql = `SELECT * FROM bookings WHERE email = '${this.payload.email}'`;
+		const { rows } = await Db.query(sql);
+		if (rows.length === 0) {
+			this.result = 'Sorry you have no booking records yet.';
 			return false;
 		}
-		this.result = obj;
+		this.result = rows;
 		return true;
 	}
 
