@@ -66,14 +66,21 @@ class Bookings {
 
 	async deleteBooking() {
 		const id = parseInt(this.payload.bookId, 10);
-		const sql2 = `DELETE FROM bookings WHERE id ='${id}' AND email = '${this.payload.email}'`;
-		const { rows } = await Db.query(sql2);
-		if (!rows) {
-			this.result = { status: 401, message: 'You are not allowed to delete this booking.' };
+		const obj = `SELECT *  FROM bookings WHERE id = '${id}'`;
+		const { rows } = await Db.query(obj);
+		if (rows.length === 0) {
+			this.result = { status: 404, message: `Booking Id : ${id} is not available` };
 			return false;
+		} else {
+			const sql2 = `DELETE FROM bookings WHERE id ='${id}' AND email = '${this.payload.email}'`;
+			const { rows } = await Db.query(sql2);
+			if (!rows) {
+				this.result = { status: 401, message: 'You are not allowed to delete this booking.' };
+				return false;
+			}
+			this.result = { status: 200, message: 'You have successfully deletes this booking.' };
+			return true;
 		}
-		this.result = { status: 200, message: 'You have successfully deletes this booking.' };
-		return true;
 	}
 }
 
