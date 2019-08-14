@@ -1,7 +1,7 @@
 {
   "swagger": "2.0",
   "info": {
-    "version": "1.0",
+    "version": "2.0",
     "title": "WayFarer V1",
     "description": "Wayfarer is an online bus booking platform.",
     "contact": {
@@ -9,7 +9,7 @@
     }
   },
   "host": "v1wayfarer.herokuapp.com",
-  "basePath": "/api/v1",
+  "basePath": "/api/v2",
   "securityDefinitions": {},
   "schemes": [
     "https"
@@ -230,6 +230,48 @@
         }
       }
     },
+    "/trips/{id}": {
+      "get": {
+        "description": "",
+        "summary": "view one trip",
+        "tags": [
+          "Way Farer VI"
+        ],
+        "operationId": "Trips1Get",
+        "deprecated": false,
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+        {
+          "name": "Authorization",
+          "in": "header",
+          "required": false,
+          "default": "Bearer {}",
+          "type": "string"
+        },
+        {
+          "name": "id",
+          "in": "path",
+          "type": "string",
+          "description": ""
+        }],
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+          "400":{
+            "description" : "Valid Token required since  API endpoint secured"
+          },
+          "404": {
+            "description": "User Record Not found"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
     "/trips/{id}/cancel": {
       "patch": {
         "description": "",
@@ -264,48 +306,6 @@
             "description": ""
           }
         ],
-        "responses": {
-          "200": {
-            "description": "Success"
-          },
-          "400":{
-            "description" : "Valid Token required since  API endpoint secured"
-          },
-          "404": {
-            "description": "User Record Not found"
-          },
-          "500": {
-            "description": "Internal server error"
-          }
-        }
-      }
-    },
-    "/trips/{id}": {
-      "get": {
-        "description": "",
-        "summary": "view one trip",
-        "tags": [
-          "Way Farer VI"
-        ],
-        "operationId": "Trips1Get",
-        "deprecated": false,
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-        {
-          "name": "Authorization",
-          "in": "header",
-          "required": false,
-          "default": "Bearer {}",
-          "type": "string"
-        },
-        {
-          "name": "id",
-          "in": "path",
-          "type": "string",
-          "description": ""
-        }],
         "responses": {
           "200": {
             "description": "Success"
