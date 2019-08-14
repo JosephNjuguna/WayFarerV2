@@ -102,6 +102,9 @@ class Validations {
 
 			fare: Joi.string().regex(/^[0-9]*[1-9][0-9]*$/).required().error(new Error('Invalid fare value. ensure you have numbers only. eg 2000')),
 		});
+		if (origin === destination) {
+			return reqResponses.handleError(400, 'Please confirm your trip origin and destination please. they shouldn`t be the same', res);
+		}
 		Joi.validate(data, schema, (err) => {
 			if (err) {
 				return res.status(400).json({

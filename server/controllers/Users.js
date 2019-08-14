@@ -45,10 +45,6 @@ class Users {
 			if (EncryptData.validPassword(password, userLogin.password)) {
 				const token = jwtGen.generateToken(id, email, firstname, lastname, isadmin);
 				const userdata = {
-					id,
-					firstname,
-					lastname,
-					email,
 					token,
 				};
 				return reqResponses.handleSuccess(200, `welcome ${firstname}`, userdata, res);

@@ -512,9 +512,6 @@ describe('/TRIPS AND BOOKINGS', () => {
 		chai.request(app)
 			.patch(`/api/v2/trips/adrer/cancel`)
 			.set('authorization', `Bearer ${adminToken}`)
-			.send({
-				status: 'canceled',
-			})
 			.end((err, res) => {
 				res.should.have.status(400);
 				if (err) return done();
@@ -526,9 +523,6 @@ describe('/TRIPS AND BOOKINGS', () => {
 		chai.request(app)
 			.patch(`/api/v2/trips/${100000}/cancel`)
 			.set('authorization', `Bearer ${adminToken}`)
-			.send({
-				status: 'canceled',
-			})
 			.end((err, res) => {
 				res.should.have.status(404);
 				if (err) return done();
@@ -540,9 +534,6 @@ describe('/TRIPS AND BOOKINGS', () => {
 		chai.request(app)
 			.patch(`/api/v2/trips/${1}/cancel`)
 			.set('authorization', `Bearer ${adminToken}`)
-			.send({
-				status: 'canceled',
-			})
 			.end((err, res) => {
 				res.should.have.status(200);
 				if (err) return done();
@@ -554,9 +545,6 @@ describe('/TRIPS AND BOOKINGS', () => {
 		chai.request(app)
 			.patch(`/api/v2/trips/${1}/cancel`)
 			.set('authorization', `Bearer ${adminToken}`)
-			.send({
-				status: 'canceled',
-			})
 			.end((err, res) => {
 				res.should.have.status(400);
 				if (err) return done();

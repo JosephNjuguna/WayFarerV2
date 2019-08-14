@@ -29,9 +29,8 @@ class Trip {
 
 	static async cancelTrip(req, res) {
 		try {
-			const tripStatus = req.body.status;
 			const tripId = req.params.id;
-			const cancelTrip = new TripModel({ tripStatus, tripId });
+			const cancelTrip = new TripModel({ tripId });
 			if (!await cancelTrip.cancelTrip()) {
 				return reqResponses.handleError(cancelTrip.result.status, cancelTrip.result.message, res);
 			}
