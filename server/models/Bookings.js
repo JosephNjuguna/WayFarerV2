@@ -1,4 +1,3 @@
-import db from '../Db/bookings';
 import date from '../helpers/Date';
 import Db from '../Db/Db';
 

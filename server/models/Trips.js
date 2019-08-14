@@ -1,4 +1,3 @@
-import db from '../Db/trips';
 import Db from '../Db/Db';
 
 class Trips {
