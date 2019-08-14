@@ -502,7 +502,7 @@ describe('/TRIPS AND BOOKINGS', () => {
 			.delete('/api/v2/bookings/1')
 			.set('authorization', `Bearer ${userToken}`)
 			.end((err, res) => {
-				res.should.have.status(204);
+				res.should.have.status(202);
 				if (err) return done();
 				done();
 			});
