@@ -21,6 +21,17 @@ describe('/TRIPS AND BOOKINGS', () => {
 		done();
 	});
 
+	it('should check all trips admin', (done) => {
+		chai.request(app)
+			.get('/api/v2/trips')
+			.set('authorization', `Bearer ${userToken}`)
+			.end((err, res) => {
+				res.should.have.status(404);
+				if (err) return done();
+				done();
+			});
+	});
+
 	it('should show that token is required', (done) => {
 		chai.request(app)
 			.post('/api/v2/trips')
@@ -204,10 +215,10 @@ describe('/TRIPS AND BOOKINGS', () => {
 
 	it('should show no single trip (admin)', (done) => {
 		chai.request(app)
-			.get('/api/v2/trips/1')
+			.get('/api/v2/trips/1949859')
 			.set('authorization', `Bearer ${adminToken}`)
 			.end((err, res) => {
-				res.should.have.status(200);
+				res.should.have.status(404);
 				if (err) return done();
 				done();
 			});
@@ -246,17 +257,6 @@ describe('/TRIPS AND BOOKINGS', () => {
 			});
 	});
 
-	it('should filter trip by origin', (done) => {
-		chai.request(app)
-			.get('/api/v2/origin/KIGALI')
-			.set('authorization', `Bearer ${userToken}`)
-			.end((err, res) => {
-				res.should.have.status(200);
-				if (err) return done();
-				done();
-			});
-	});
-
 	it('should show invalid trip origin', (done) => {
 		chai.request(app)
 			.get('/api/v2/origin/1234')
@@ -268,12 +268,23 @@ describe('/TRIPS AND BOOKINGS', () => {
 			});
 	});
 
-	it('should show trip not found by origin', (done) => {
+	it('should show no filter result from filtered origin', (done) => {
 		chai.request(app)
-			.get('/api/v2/origin/london')
+			.get('/api/v2/origin/mombasa')
 			.set('authorization', `Bearer ${userToken}`)
 			.end((err, res) => {
 				res.should.have.status(404);
+				if (err) return done();
+				done();
+			});
+	});
+
+	it('should filter trip by origin', (done) => {
+		chai.request(app)
+			.get('/api/v2/origin/KIGALI')
+			.set('authorization', `Bearer ${userToken}`)
+			.end((err, res) => {
+				res.should.have.status(200);
 				if (err) return done();
 				done();
 			});
@@ -290,23 +301,23 @@ describe('/TRIPS AND BOOKINGS', () => {
 			});
 	});
 
-	it('should filter trip by destination', (done) => {
-		chai.request(app)
-			.get('/api/v2/destination/KAMPALA')
-			.set('authorization', `Bearer ${userToken}`)
-			.end((err, res) => {
-				res.should.have.status(200);
-				if (err) return done();
-				done();
-			});
-	});
-
 	it('should show trip not found by destination', (done) => {
 		chai.request(app)
 			.get('/api/v2/destination/venice')
 			.set('authorization', `Bearer ${userToken}`)
 			.end((err, res) => {
 				res.should.have.status(404);
+				if (err) return done();
+				done();
+			});
+	});
+
+	it('should filter trip by destination', (done) => {
+		chai.request(app)
+			.get('/api/v2/destination/KAMPALA')
+			.set('authorization', `Bearer ${userToken}`)
+			.end((err, res) => {
+				res.should.have.status(200);
 				if (err) return done();
 				done();
 			});
@@ -327,6 +338,50 @@ describe('/TRIPS AND BOOKINGS', () => {
 		chai.request(app)
 			.get('/api/v2/trips/10000')
 			.set('authorization', `Bearer ${userToken}`)
+			.end((err, res) => {
+				res.should.have.status(404);
+				if (err) return done();
+				done();
+			});
+	});
+
+	it('should check all trips', (done) => {
+		chai.request(app)
+			.get('/api/v2/trips')
+			.set('authorization', `Bearer ${userToken}`)
+			.end((err, res) => {
+				res.should.have.status(200);
+				if (err) return done();
+				done();
+			});
+	});
+
+	it('should check single trip', (done) => {
+		chai.request(app)
+			.get('/api/v2/trips/1')
+			.set('authorization', `Bearer ${userToken}`)
+			.end((err, res) => {
+				res.should.have.status(200);
+				if (err) return done();
+				done();
+			});
+	});
+
+	it('should successfully show user his/her bookings', (done) => {
+		chai.request(app)
+			.get('/api/v2/userbookings')
+			.set('authorization', `Bearer ${userToken}`)
+			.end((err, res) => {
+				res.should.have.status(404);
+				if (err) return done();
+				done();
+			});
+	});
+
+	it('should successfully show admin all bookings', (done) => {
+		chai.request(app)
+			.get('/api/v2/bookings')
+			.set('authorization', `Bearer ${adminToken}`)
 			.end((err, res) => {
 				res.should.have.status(404);
 				if (err) return done();
@@ -502,7 +557,7 @@ describe('/TRIPS AND BOOKINGS', () => {
 			.delete('/api/v2/bookings/1')
 			.set('authorization', `Bearer ${userToken}`)
 			.end((err, res) => {
-				res.should.have.status(204);
+				res.should.have.status(202);
 				if (err) return done();
 				done();
 			});
@@ -512,9 +567,6 @@ describe('/TRIPS AND BOOKINGS', () => {
 		chai.request(app)
 			.patch(`/api/v2/trips/adrer/cancel`)
 			.set('authorization', `Bearer ${adminToken}`)
-			.send({
-				status: 'canceled',
-			})
 			.end((err, res) => {
 				res.should.have.status(400);
 				if (err) return done();
@@ -526,9 +578,6 @@ describe('/TRIPS AND BOOKINGS', () => {
 		chai.request(app)
 			.patch(`/api/v2/trips/${100000}/cancel`)
 			.set('authorization', `Bearer ${adminToken}`)
-			.send({
-				status: 'canceled',
-			})
 			.end((err, res) => {
 				res.should.have.status(404);
 				if (err) return done();
@@ -540,9 +589,6 @@ describe('/TRIPS AND BOOKINGS', () => {
 		chai.request(app)
 			.patch(`/api/v2/trips/${1}/cancel`)
 			.set('authorization', `Bearer ${adminToken}`)
-			.send({
-				status: 'canceled',
-			})
 			.end((err, res) => {
 				res.should.have.status(200);
 				if (err) return done();
@@ -554,9 +600,6 @@ describe('/TRIPS AND BOOKINGS', () => {
 		chai.request(app)
 			.patch(`/api/v2/trips/${1}/cancel`)
 			.set('authorization', `Bearer ${adminToken}`)
-			.send({
-				status: 'canceled',
-			})
 			.end((err, res) => {
 				res.should.have.status(400);
 				if (err) return done();
@@ -574,6 +617,50 @@ describe('/TRIPS AND BOOKINGS', () => {
 			})
 			.end((err, res) => {
 				res.should.have.status(404);
+				if (err) return done();
+				done();
+			});
+	});
+
+	it('should check all trips', (done) => {
+		chai.request(app)
+			.get('/api/v2/trips')
+			.set('authorization', `Bearer ${userToken}`)
+			.end((err, res) => {
+				res.should.have.status(404);
+				if (err) return done();
+				done();
+			});
+	});
+
+	it('should check single trip', (done) => {
+		chai.request(app)
+			.get('/api/v2/trips/1')
+			.set('authorization', `Bearer ${userToken}`)
+			.end((err, res) => {
+				res.should.have.status(404);
+				if (err) return done();
+				done();
+			});
+	});
+
+	it('should check all trips', (done) => {
+		chai.request(app)
+			.get('/api/v2/trips')
+			.set('authorization', `Bearer ${adminToken}`)
+			.end((err, res) => {
+				res.should.have.status(200);
+				if (err) return done();
+				done();
+			});
+	});
+
+	it('should check single trip', (done) => {
+		chai.request(app)
+			.get('/api/v2/trips/1')
+			.set('authorization', `Bearer ${adminToken}`)
+			.end((err, res) => {
+				res.should.have.status(200);
 				if (err) return done();
 				done();
 			});

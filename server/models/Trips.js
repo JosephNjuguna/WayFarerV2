@@ -1,4 +1,3 @@
-import db from '../Db/trips';
 import Db from '../Db/Db';
 
 class Trips {
@@ -17,7 +16,7 @@ class Trips {
 	}
 
 	async createTrip() {
-		const values = [this.payload.busLicensenumber, parseInt(this.payload.seatingCapacity, 10), this.payload.origin, this.payload.destination, this.payload.tripDate, parseInt(this.payload.fare, 10), 'active'];
+		const values = [this.payload.busLicensenumber, parseInt(this.payload.seatingCapacity, 10), this.payload.origin.toLowerCase(), this.payload.destination.toLowerCase(), this.payload.tripDate, parseInt(this.payload.fare, 10), 'active'];
 		const sql = 'INSERT INTO trips (buslicensenumber, seatingcapacity, origin, destination, tripdate, fare, status ) VALUES($1, $2, $3, $4, $5, $6, $7) returning *';
 		const { rows } = await Db.query(sql, values);
 		this.result = rows[0];
@@ -36,7 +35,8 @@ class Trips {
 			this.result = { status: 400, message: `This trip is already canceled` };
 			return false;
 		} else {
-			const sql = `UPDATE trips SET status ='${this.payload.tripStatus}'  WHERE id = '${tripId}' returning *;`;
+			const status = 'canceled';
+			const sql = `UPDATE trips SET status ='${status}'  WHERE id = '${tripId}' returning *;`;
 			const { rows } = await Db.query(sql);
 			if (rows.length === 0) {
 				this.result = { status: 404, message: `Trip not found` };
@@ -94,7 +94,7 @@ class Trips {
 
 	async filterOrigin() {
 		const status = 'active';
-		const sql = `SELECT * FROM trips WHERE origin = '${this.payload.trip}' AND status = '${status}'`;
+		const sql = `SELECT * FROM trips WHERE origin = '${this.payload.trip.toLowerCase()}' AND status = '${status}'`;
 		const { rows } = await Db.query(sql);
 		if (rows.length === 0) {
 			this.result = 'No Origin found.';
@@ -106,7 +106,7 @@ class Trips {
 
 	async filterDestination() {
 		const status = 'active';
-		const sql = `SELECT * FROM trips WHERE destination = '${this.payload.trip}' AND status = '${status}'`;
+		const sql = `SELECT * FROM trips WHERE destination = '${this.payload.trip.toLowerCase()}' AND status = '${status}'`;
 		const { rows } = await Db.query(sql);
 		if (rows.length === 0) {
 			this.result = 'No Destination found.';
