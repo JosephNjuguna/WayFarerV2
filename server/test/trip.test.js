@@ -292,7 +292,7 @@ describe('/TRIPS AND BOOKINGS', () => {
 
 	it('should filter trip by destination', (done) => {
 		chai.request(app)
-			.get('/api/v2/destination/KIGALI')
+			.get('/api/v2/destination/KAMPALA')
 			.set('authorization', `Bearer ${userToken}`)
 			.end((err, res) => {
 				res.should.have.status(200);
