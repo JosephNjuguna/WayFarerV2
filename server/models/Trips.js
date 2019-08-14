@@ -90,13 +90,15 @@ class Trips {
 	}
 
 	async filterOrigin() {
-		const obj = db.filter(o => o.origin === this.payload.trip);
-		if (obj.length === 0) {
+		const status = 'active';
+		const sql = `SELECT * FROM trips WHERE origin = '${this.payload.trip}' AND status = '${status}'`;
+		const { rows } = await Db.query(sql);
+		if (rows.length === 0) {
 			this.result = 'No Origin found.';
 			return false;
 		}
-		this.result = obj;
-		return true;
+		this.result = rows;
+		return this.result;
 	}
 
 	async filterDestination() {
