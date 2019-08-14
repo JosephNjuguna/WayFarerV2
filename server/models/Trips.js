@@ -69,11 +69,12 @@ class Trips {
 
 	async viewSingletrip() {
 		const id = parseInt(this.payload, 10);
-		const obj = db.find(o => o.id === id);
-		if (!obj) {
+		const sql = `SELECT * FROM trips WHERE id ='${id}'`;
+		const { rows } = await Db.query(sql);
+		if (rows.length === 0) {
 			return false;
 		}
-		this.result = obj;
+		this.result = rows[0];
 		return this.result;
 	}
 
