@@ -1,29 +1,28 @@
-# WayFarerV1
+# WayFarer V2
 Wayfarer is an online bus booking platform.
 
 ### BADGES.
-[![Maintainability](https://api.codeclimate.com/v1/badges/9f4deb472db93aea9bc4/maintainability)](https://codeclimate.com/github/JosephNjuguna/WayFarerV1/maintainability)
-[![Coverage Status](https://coveralls.io/repos/github/JosephNjuguna/WayFarerV1/badge.svg?branch=dev)](https://coveralls.io/github/JosephNjuguna/WayFarerV1?branch=dev)
 [![Build Status](https://travis-ci.org/JosephNjuguna/WayFarerV1.svg?branch=dev)](https://travis-ci.org/JosephNjuguna/WayFarerV1)
-[![Test Coverage](https://api.codeclimate.com/v1/badges/9f4deb472db93aea9bc4/test_coverage)](https://codeclimate.com/github/JosephNjuguna/WayFarerV1/test_coverage)
+[![Coverage Status](https://coveralls.io/repos/github/JosephNjuguna/WayFarerV1/badge.svg?branch=dev)](https://coveralls.io/github/JosephNjuguna/WayFarerV1?branch=dev)
+[![Maintainability](https://api.codeclimate.com/v1/badges/9f4deb472db93aea9bc4/maintainability)](https://codeclimate.com/github/JosephNjuguna/WayFarerV1/maintainability)
 
 
 ## API ENDPOINTS
 
 | Resource URL                     | Methods | Description                 |
 | -------------------------------- | ------- | --------------------------- |
-| /api/v1/signup                   | POST    | Create an account           |
-| /api/v1/login                    | POST    | Login                       |
-| /api/v1/trips                    | POST    | admin create trip           |
-| /api/v1/trips/:id/cancel         | PATCH   | admin cancel trip           |
-| /api/v1/trips                    | GET     | admin/user view all trips   |
-| /api/v1/trips/:id                | GET     | admin/userview specific trip|
-| /api/v1/origin/:route            | GET     | user filter trip by route   |
-| /api/v1/destination/:route       | GET     | user filter trip by destination|
-| /api/v1/bookings                 | POST    | user book a trip            |
-| /api/v1/userbookings             | GET    | user view all his/her bookings|
-| /api/v1/bookings                 | GET     | admin get all bookings      |
-| /api/v1/bookings/:id             | DELETE  | user cancel his/her trip booking|
+| /api/v2/signup                   | POST    | Create an account           |
+| /api/v2/login                    | POST    | Login                       |
+| /api/v2/trips                    | POST    | admin create trip           |
+| /api/v2/trips/:id/cancel         | PATCH   | admin cancel trip           |
+| /api/v2/trips                    | GET     | admin/user view all trips   |
+| /api/v2/trips/:id                | GET     | admin/userview specific trip|
+| /api/v2/origin/:route            | GET     | user filter trip by route   |
+| /api/v2/destination/:route       | GET     | user filter trip by destination|
+| /api/v2/bookings                 | POST    | user book a trip            |
+| /api/v2/userbookings             | GET    | user view all his/her bookings|
+| /api/v2/bookings                 | GET     | admin get all bookings      |
+| /api/v2/bookings/:id             | DELETE  | user cancel his/her trip booking|
 
 ## Tools Used
 
@@ -68,10 +67,16 @@ It will install the node_modules which will help you run the project on your loc
 Before running the server ensure that you create a  **.env** file.
 Inside the **.env** file  add the following:
 ```
-EMAIL = admin@wayfarer.com
-PASSWORD = @12Admin
-PORT = 3000
 JWT_KEY= 'wayfarer@12'
+PORT = 3000
+
+// admin data
+EMAIL = 'admin123@mail.com'
+PASSWORD = 'Admin@123'
+
+//users data
+email = 'user@mail.com'
+password = 'qwerQ@qwerre123'
 ```
 
 ## Run the server
@@ -85,10 +90,35 @@ $ npm start
 ```
 $ npm test
 ```
+
+### VALIDATIONS DONE.
+1. user data during signup.
+2. user data during login.
+3. all the required parameter have been validated.
+- a user can`t search using a string where an interger is required.
+```
+/api/v2/trips/:id/cancel
+```
+- user can`t use integers where strings are required.
+```
+/api/v2/origin/:route 
+```
+4. user cannot book a canceled trip.
+5. user can`t  book a seat twice but the user can book two seats on the same bus.
+6. admin cannot create a trip whereas the destination and origin are the same.
+7. user cannot delete another users booking.
+8. user cannot delete again the deleted booking.
+#### trips validation
+9. user can only view active trips.
+10. admin can view all trips regardless of been canceled or active.
+11. user cannot book a seat that is not stated on the trip. eg:
+```
+a trip is stated to have 20 seats. a user can`t book  seat number 25. since its not available.
+```
 # API ENDPOINTS DATA:
  use this data to test the api endpoint. feel free to change the data.
  
- **POST /api/v1/signup**
+ **POST /api/v2/signup**
  ```
     firstname:Joe
     lastname:njuguna
@@ -96,20 +126,20 @@ $ npm test
     password:qwerQ@qwerre123
 ```
 
-**POST /api/v1/login** (user)
+**POST /api/v2/login** (user)
 ```
 email:joe@gmail.com
 password:qwerQ@qwerre123
 ```
 
-**POST /api/v1/login** (admin)
+**POST /api/v2/login** (admin)
 ```
 email:admin123@gmail.com
 password:qwerQ@qwerre123
 ```
-**POST /api/v1/trips**
+**POST /api/v2/trips**
 
--admin create trip
+-admin create trip enpoint
 ```
 seatingCapacity:12
 busLicensenumber:KRE 132
@@ -119,22 +149,29 @@ tripDate:1/1/2019
 fare:3000
 ```
 
-**POST /api/v1/bookings**
+**PATCH /api/v2/trips/2/cancel**
+
+-- admin cancel trip endpoint --
+
+**POST /api/v2/bookings**
 
 -user book trip
 ```
 tripId: 1
 seatNumber: 12
 ```
-**DELETE /api/v1/bookings/:id**
+**DELETE /api/v2/bookings/:id**
+
+-- user delete his/her booking -- 
 ```
 BOOKING ID
 ```
 
-**Version 1.0.0**
+**Version 2.0.0**
 
 ## Contributor
 
 - Joseph Njuguna <josephnjuguna482@gmail.com>
 
 ---
+feel free to reachout incase of any question and feel free to use this API for your needs. Joseph Njuguna
