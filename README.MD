@@ -2,10 +2,9 @@
 Wayfarer is an online bus booking platform.
 
 ### BADGES.
-[![Maintainability](https://api.codeclimate.com/v1/badges/9f4deb472db93aea9bc4/maintainability)](https://codeclimate.com/github/JosephNjuguna/WayFarerV1/maintainability)
-[![Coverage Status](https://coveralls.io/repos/github/JosephNjuguna/WayFarerV1/badge.svg?branch=dev)](https://coveralls.io/github/JosephNjuguna/WayFarerV1?branch=dev)
 [![Build Status](https://travis-ci.org/JosephNjuguna/WayFarerV1.svg?branch=dev)](https://travis-ci.org/JosephNjuguna/WayFarerV1)
-[![Test Coverage](https://api.codeclimate.com/v1/badges/9f4deb472db93aea9bc4/test_coverage)](https://codeclimate.com/github/JosephNjuguna/WayFarerV1/test_coverage)
+[![Coverage Status](https://coveralls.io/repos/github/JosephNjuguna/WayFarerV1/badge.svg?branch=dev)](https://coveralls.io/github/JosephNjuguna/WayFarerV1?branch=dev)
+[![Maintainability](https://api.codeclimate.com/v1/badges/9f4deb472db93aea9bc4/maintainability)](https://codeclimate.com/github/JosephNjuguna/WayFarerV1/maintainability)
 
 
 ## API ENDPOINTS
