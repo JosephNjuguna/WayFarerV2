@@ -1,4 +1,4 @@
-# WayFarerV1
+# WayFarer V2
 Wayfarer is an online bus booking platform.
 
 ### BADGES.
