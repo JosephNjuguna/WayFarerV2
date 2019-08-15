@@ -66,9 +66,7 @@ class DatabaseInit {
 
 	async createAdmin() {
 		const sql = `SELECT * FROM users WHERE email='${process.env.EMAIL}'`;
-		const {
-			rows,
-		} = await this.query(sql);
+		const { rows } = await this.query(sql);
 		if (rows.length === 0) {
 			const hashedPassword = EncryptData.generateHash(process.env.PASSWORD);
 			const adminUser = {
@@ -78,7 +76,7 @@ class DatabaseInit {
 				password: hashedPassword,
 				isAdmin: true,
 			};
-			const sqlAdmin = 'INSERT INTO users (firstname, lastname, email, password, isAdmin ) values($1, $2, $3, $4, $5) returning *';
+			const sqlAdmin = 'INSERT INTO users (firstname, lastname, email, password, isAdmin ) VALUES($1, $2, $3, $4, $5) returning *;';
 			// eslint-disable-next-line max-len
 			const value = [adminUser.firstname, adminUser.lastname, adminUser.email, adminUser.password, adminUser.isAdmin];
 			// eslint-disable-next-line no-unused-vars

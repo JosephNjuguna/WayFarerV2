@@ -32,6 +32,9 @@ class Validations {
 			re = /(^[a-zA-Z0-9_.]+@[a-zA-Z0-9-]+\.[a-z]+$)/;
 			if (!re.test(email)) return reqResponses.handleError(400, 'enter valid email e.g user@gmail.com', res);
 		}
+		if (/\s/.test(password)) {
+			return reqResponses.handleError(400, 'enter valid password without spaces. should be more than 7 characters, contain letters,numbers and punctuation marks: eg. $@#', res);
+		}
 		if (password) {
 			re = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*(\W|_)).{7,}$/;
 			if (!re.test(password)) return reqResponses.handleError(400, 'enter valid password. should be more than 7 characters, contain letters,numbers and punctuation marks: eg. $@#', res);
