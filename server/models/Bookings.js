@@ -1,3 +1,4 @@
+/* eslint-disable no-plusplus */
 import date from '../helpers/Date';
 import Db from '../Db/Db';
 
@@ -30,10 +31,24 @@ class Bookings {
 			this.result = { status: 400, message: `Please select a current trip. this trip already happened on date ${rows[0].tripdate}.` };
 			return false;
 		} else {
-			const sql = `SELECT *  FROM bookings WHERE tripId ='${tripInfo}' AND seatNumber = '${seatNo}'`;
+			const sql = `SELECT * FROM bookings WHERE tripId ='${tripInfo}' AND seatnumber = '${seatNo}'`;
 			const { rows } = await Db.query(sql);
 			if (rows.length > 0) {
-				this.result = { status: 404, message: `Seat number : '${seatNo}' already taken. choose another seat` };
+				const bookedSeats = [];
+				const availableSeats = [];
+				const sqlSeats = `SELECT *  FROM bookings WHERE tripId ='${tripInfo}'`;
+				const { rows } = await Db.query(sqlSeats);
+				if (rows.length > 0) {
+					for (let i = 0; i < rows.length; i++) {
+						bookedSeats.push(rows[i].seatnumber);
+					}
+					for (let i = 1; i <= trip[0].seatingcapacity; i++) {
+						if (!bookedSeats.includes(i)) {
+							availableSeats.push(i);
+						}
+					}
+				}
+				this.result = { status: 404, message: `Seat number : '${seatNo}' already taken. here are the available seats '${availableSeats}` };
 				return false;
 			} else {
 				const values = [tripInfo, this.payload.id, trip[0].buslicensenumber, trip[0].tripdate, this.payload.firstname, this.payload.lastname, this.payload.email, seatNo];
